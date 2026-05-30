@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <title>Trailhead — your mountain journey</title>
 <style>
   :root{
@@ -56,6 +57,7 @@
   .ob-input:focus{border-color:#1e3a5f;background:#fff}
   .ob-input::placeholder{color:var(--muted)}
   .ob-foot{font-size:11px;color:var(--muted);margin-top:14px;letter-spacing:.05em}
+  #ob-status{font-size:13px;color:#c9a24a;margin:8px 0;min-height:20px}
 
   /* save journey banner */
   #save-banner{
@@ -262,10 +264,8 @@
       </linearGradient>
     </defs>
     <rect width="1600" height="900" fill="url(#obSky)"/>
-    <!-- soft sun -->
     <circle cx="1180" cy="200" r="80" fill="#fff6e0" opacity="0.7"/>
     <circle cx="1180" cy="200" r="50" fill="#fff8e8" opacity="0.95"/>
-    <!-- drifting clouds -->
     <g class="cloud" opacity="0.85">
       <ellipse cx="200" cy="180" rx="70" ry="14" fill="#fff"/>
       <ellipse cx="260" cy="172" rx="50" ry="12" fill="#fff"/>
@@ -274,36 +274,29 @@
       <ellipse cx="600" cy="240" rx="90" ry="16" fill="#fff"/>
       <ellipse cx="680" cy="232" rx="60" ry="13" fill="#fff"/>
     </g>
-    <!-- far range -->
     <polygon points="0,560 180,400 320,500 480,360 640,490 820,380 980,520 1180,400 1360,500 1600,420 1600,560" fill="url(#obFar)" opacity="0.85"/>
-    <!-- mid mountains with snow caps -->
     <polygon points="120,560 360,260 600,560" fill="url(#obMid)"/>
     <polygon points="320,560 520,310 720,560" fill="#6a8aa2"/>
     <polygon points="540,560 820,220 1100,560" fill="url(#obMid)"/>
     <polygon points="900,560 1140,300 1380,560" fill="#6a8aa2"/>
     <polygon points="1200,560 1420,340 1600,560 1600,560" fill="url(#obMid)"/>
-    <!-- snow caps -->
     <polygon points="335,300 360,260 385,300 372,318 348,318" fill="#f4faff"/>
     <polygon points="495,348 520,310 545,348 530,362 510,362" fill="#f0f6fb"/>
     <polygon points="785,265 820,220 855,265 838,285 802,285" fill="#f6fbff"/>
     <polygon points="1110,340 1140,300 1170,340 1156,358 1126,358" fill="#f0f6fb"/>
     <polygon points="1395,378 1420,340 1445,378 1432,394 1408,394" fill="#f4faff"/>
-    <!-- lake -->
     <rect x="0" y="558" width="1600" height="342" fill="url(#obLake)"/>
-    <!-- mountain reflections (faint, flipped) -->
     <g opacity="0.28">
       <polygon points="120,558 360,858 600,558" fill="#6a8aa2"/>
       <polygon points="540,558 820,898 1100,558" fill="#6a8aa2"/>
       <polygon points="1200,558 1420,778 1600,558" fill="#6a8aa2"/>
     </g>
-    <!-- water ripples -->
     <g stroke="#fff" stroke-linecap="round" fill="none">
       <path class="ripple"   d="M120 660 q 30 -4 60 0 t 60 0 t 60 0" stroke-width="1.2" opacity=".5"/>
       <path class="ripple b" d="M780 720 q 40 -5 80 0 t 80 0 t 80 0" stroke-width="1.2" opacity=".5"/>
       <path class="ripple"   d="M260 790 q 35 -4 70 0 t 70 0 t 70 0 t 70 0" stroke-width="1" opacity=".4"/>
       <path class="ripple b" d="M1000 820 q 35 -4 70 0 t 70 0 t 70 0" stroke-width="1" opacity=".4"/>
     </g>
-    <!-- tiny boat silhouette -->
     <g opacity="0.55">
       <path d="M740 700 q 18 8 36 0 l -6 6 q -12 4 -24 0 z" fill="#2a3a4a"/>
       <line x1="758" y1="700" x2="758" y2="678" stroke="#2a3a4a" stroke-width="1.2"/>
@@ -319,8 +312,10 @@
     </button>
     <div class="ob-divider">— or with email —</div>
     <input id="ob-email" class="ob-input" type="email" placeholder="you@trail.com" />
+    <input id="ob-pass" class="ob-input" type="password" placeholder="Password" />
     <input id="ob-name" class="ob-input" placeholder="What should we call you?" />
     <button class="ob-btn" onclick="onboard('email')">Begin journey</button>
+    <div id="ob-status"></div>
     <p class="ob-foot">Guest journeys live only on this device.</p>
   </div>
 </div>
@@ -350,6 +345,32 @@
   </div>
 </div>
 
+<!-- ============ PREMIUM MODAL ============ -->
+<div id="premium-modal" style="position:fixed;inset:0;z-index:60;display:none;align-items:center;justify-content:center;
+  background:rgba(15,23,34,.7);backdrop-filter:blur(8px)">
+  <div style="width:min(420px,92vw);background:#fff;border-radius:24px;padding:36px 32px;text-align:center;
+    box-shadow:0 40px 100px -40px rgba(15,23,34,.5);border:1px solid rgba(15,23,34,.06)">
+    <div style="font-size:36px;margin-bottom:12px">⛰️</div>
+    <div style="font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:#c9a24a;margin-bottom:8px">Trailhead Premium</div>
+    <h2 style="margin:0 0 10px;font-size:26px;font-weight:500;color:#1e3a5f">Unlock the Summit Views</h2>
+    <p style="color:#7b8aa1;font-size:14px;line-height:1.6;margin:0 0 24px">
+      Desert Canyon and Night Climb themes are available on Premium.<br/>
+      Also unlocks: longer expedition routes, export to CSV, and priority sync.
+    </p>
+    <button onclick="startCheckout()" style="display:block;width:100%;padding:15px;border-radius:14px;
+      background:linear-gradient(135deg,#c9a24a,#a07830);color:#fff;font-size:16px;font-weight:600;
+      border:none;cursor:pointer;box-shadow:0 10px 30px -10px rgba(201,162,74,.6);margin-bottom:10px;font-family:inherit">
+      Upgrade — $4.99 / month
+    </button>
+    <button onclick="document.getElementById('premium-modal').style.display='none'"
+      style="width:100%;padding:11px;border-radius:14px;background:rgba(15,23,34,.05);
+      color:#7b8aa1;font-size:14px;border:none;cursor:pointer;font-family:inherit">
+      Maybe later
+    </button>
+    <p style="font-size:11px;color:#b0b8c4;margin:14px 0 0">Secure payment via Stripe · Cancel anytime</p>
+  </div>
+</div>
+
 <!-- ============ SIDEBAR ============ -->
 <aside>
   <div class="brand">
@@ -367,7 +388,7 @@
   </nav>
   <div class="side-foot">
     <b id="who">Guest climber</b>
-    <span id="who-sub">No account linked</span>
+    <span id="who-sub" style="font-size:11px;display:block;margin-top:2px">No account linked</span>
     <button onclick="signOut()">Sign out / switch</button>
   </div>
 </aside>
@@ -378,7 +399,6 @@
   <!-- ===== CLIMB VIEW ===== -->
   <section id="climb" class="view active">
     <div class="scene" id="scene">
-      <!-- Parallax layers will be injected by JS -->
       <div class="hud-top">
         <div>
           <div class="moment" id="moment">— Trailhead —</div>
@@ -475,8 +495,12 @@
         <select id="theme-sel" style="padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:#fff">
           <option value="snowy">Snowy peaks</option>
           <option value="forest">Forest mountain</option>
-          <option value="desert">Desert canyon</option>
-          <option value="night">Night climb</option>
+          <option value="pleasant">Pleasant meadow</option>
+          <option value="sunny">Sunny ridge</option>
+          <option value="rainy">Rainy pass</option>
+          <option value="dawn">Dawn glow</option>
+          <option value="desert">🔒 Desert Canyon — Premium</option>
+          <option value="night">🔒 Night Climb — Premium</option>
         </select>
       </div>
       <div class="setting-row">
@@ -498,34 +522,68 @@
 </main>
 
 <script>
+/* ================ SUPABASE SETUP ================ */
+// BUYER: Replace these two values with your own Supabase project credentials.
+// Find them at: supabase.com → your project → Settings → API
+const SUPA_URL = 'https://yfduwenfpibzeorodpwu.supabase.co';
+const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlmZHV3ZW5mcGliemVvcm9kcHd1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAxMTU4NzEsImV4cCI6MjA5NTY5MTg3MX0.vR24F2bPCs63BihFochYS_1bqMuCbx4r2eSqgGzQJDE';
+const supa = supabase.createClient(SUPA_URL, SUPA_KEY);
+
 /* ================ STATE & STORAGE ================ */
 const LS = "trailhead.v3";
 const defaultState = () => ({
-  user:null,                        // {kind:'guest|google|email', name, email}
-  routes:{ easy:2, standard:4, expedition:6 },
-  selectedRoute:'standard',
-  sessionMin:30,
-  theme:'snowy',
-  sound:'wind',
-  climbs:[],                        // {at, minutes, category}
-  categories:[
-    {name:'school', goal:10, color:'#3c6e71'},
-    {name:'project', goal:6, color:'#a05a2c'},
-    {name:'work', goal:8, color:'#5b6e8f'},
-    {name:'gym', goal:3, color:'#7a9b5a'},
-    {name:'reading', goal:2, color:'#c9a24a'},
+  user: null,
+  premium: false,
+  routes: { easy:2, standard:4, expedition:6 },
+  selectedRoute: 'standard',
+  sessionMin: 30,
+  theme: 'snowy',
+  sound: 'wind',
+  climbs: [],
+  categories: [
+    {name:'school',  goal:10, color:'#3c6e71'},
+    {name:'project', goal:6,  color:'#a05a2c'},
+    {name:'work',    goal:8,  color:'#5b6e8f'},
+    {name:'gym',     goal:3,  color:'#7a9b5a'},
+    {name:'reading', goal:2,  color:'#c9a24a'},
   ],
-  saveDismissed:false,
+  saveDismissed: false,
 });
+
 let state = load();
+
 function load(){
   try{
     const raw = localStorage.getItem(LS);
     if(!raw) return defaultState();
     return {...defaultState(), ...JSON.parse(raw)};
-  }catch{ return defaultState(); }
+  } catch { return defaultState(); }
 }
-function save(){ localStorage.setItem(LS, JSON.stringify(state)); }
+
+function save(){
+  localStorage.setItem(LS, JSON.stringify(state));
+  syncToCloud();
+}
+
+async function syncToCloud(){
+  const { data: { user } } = await supa.auth.getUser();
+  if(!user) return;
+  await supa.from('climbs').delete().eq('user_id', user.id);
+  if(state.climbs.length === 0) return;
+  const rows = state.climbs.map(c => ({...c, user_id: user.id}));
+  await supa.from('climbs').insert(rows);
+}
+
+async function loadFromCloud(){
+  const { data: { user } } = await supa.auth.getUser();
+  if(!user) return;
+  const { data } = await supa.from('climbs').select('*').eq('user_id', user.id);
+  if(data && data.length > 0){
+    state.climbs = data.map(({ user_id, ...rest }) => rest);
+    renderJourney();
+    renderTimer();
+  }
+}
 
 /* ================ TIMER ================ */
 let timer = { phase:'idle', remaining: state.sessionMin*60, duration: state.sessionMin*60, interval:null, category:'school' };
@@ -583,7 +641,6 @@ function resetTimer(){
   renderTimer();
 }
 function onSummit(){
-  // Don't log yet — ask the climber what this session was for.
   document.getElementById('startBtn').textContent='Begin next climb';
   document.getElementById('phase').textContent='Climb complete — checkpoint reached';
   renderTimer();
@@ -596,7 +653,6 @@ function openAttribModal(){
   document.getElementById('attrib-sub').textContent =
     `A ${state.sessionMin}-minute ascent — let it count toward one of your trails.`;
   const wrap = document.getElementById('attrib-cats');
-  // suggest most-used first
   const totals = {};
   state.climbs.forEach(c=>{ totals[c.category]=(totals[c.category]||0)+1; });
   const cats = [...state.categories].sort((a,b)=>(totals[b.name]||0)-(totals[a.name]||0));
@@ -672,29 +728,23 @@ function renderPips(){
 /* ================ SCENE ================ */
 function buildScene(){
   const scene = document.getElementById('scene');
-  // Keep HUD elements
   const hudTop = scene.querySelector('.hud-top');
   const hudTimer = scene.querySelector('.hud-timer');
   scene.innerHTML='';
-  // Sky / weather layer
   const sky = document.createElement('div');
   sky.className='pan-wrap'; sky.id='sky-layer';
   sky.innerHTML = `<svg class="layer" id="sky-svg" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid slice"></svg>`;
   scene.appendChild(sky);
-  // Mid layer (clouds, birds)
   const mid = document.createElement('div');
   mid.className='pan-wrap'; mid.id='mid-layer';
   mid.style.pointerEvents='none';
   scene.appendChild(mid);
-  // Foreground (mountains + climber)
   const fg = document.createElement('div');
   fg.className='pan-wrap'; fg.id='fg-layer';
   fg.innerHTML = `<svg class="layer" id="fg-svg" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMax meet" style="width:100%;height:100%"></svg>`;
   scene.appendChild(fg);
-
   scene.appendChild(hudTop);
   scene.appendChild(hudTimer);
-
   renderSky();
   renderMid();
   renderMountains();
@@ -706,10 +756,14 @@ function renderSky(){
   const svg = document.getElementById('sky-svg');
   const theme = state.theme;
   const grads = {
-    snowy:   ['#a8c8e0','#dfe7d8','#cdb593'],
-    forest:  ['#9bb5c9','#c7d3b8','#7a6a52'],
-    desert:  ['#e8b88a','#d4a574','#a05a2c'],
-    night:   ['#0f1a2e','#1e2a44','#2a3852'],
+    snowy:    ['#a8c8e0','#dfe7d8','#cdb593'],
+    forest:   ['#9bb5c9','#c7d3b8','#7a6a52'],
+    desert:   ['#e8b88a','#d4a574','#a05a2c'],
+    night:    ['#0f1a2e','#1e2a44','#2a3852'],
+    pleasant: ['#b9dff0','#e8f1d6','#bcd7a8'],
+    sunny:    ['#7ec4e8','#ffd58a','#f6b15a'],
+    rainy:    ['#6a7886','#8a96a4','#a8b2bc'],
+    dawn:     ['#f7c6a0','#f29c8c','#9a6ea0'],
   }[theme];
   let h = `<defs><linearGradient id="skyg" x1="0" y1="0" x2="0" y2="1">
     <stop offset="0%" stop-color="${grads[0]}"/>
@@ -717,10 +771,16 @@ function renderSky(){
     <stop offset="100%" stop-color="${grads[2]}"/>
   </linearGradient></defs>
   <rect width="1000" height="600" fill="url(#skyg)"/>`;
-  // sun or moon
   if(theme==='night'){
     h += `<circle cx="780" cy="120" r="38" fill="#f3e9c7" opacity=".95"/>`;
-    // stars added via DOM in renderMid
+  } else if(theme==='rainy'){
+    // overcast — no sun
+  } else if(theme==='dawn'){
+    h += `<circle cx="760" cy="200" r="60" fill="#ffd9b8" opacity=".55"/>
+          <circle cx="760" cy="200" r="36" fill="#ffe8cc"/>`;
+  } else if(theme==='sunny'){
+    h += `<circle cx="780" cy="130" r="58" fill="#fff1b8" opacity=".75"/>
+          <circle cx="780" cy="130" r="34" fill="#fff8d8"/>`;
   } else {
     h += `<circle cx="780" cy="130" r="48" fill="#fff3d1" opacity=".7"/>
           <circle cx="780" cy="130" r="28" fill="#fffae0"/>`;
@@ -732,7 +792,6 @@ function renderMid(){
   const mid = document.getElementById('mid-layer');
   mid.innerHTML='';
   const weather = computeWeather();
-  // clouds
   const cloudCount = state.theme==='night'?1 : (weather.tier>=2?2:3);
   for(let i=0;i<cloudCount;i++){
     const c = document.createElement('div');
@@ -746,7 +805,6 @@ function renderMid(){
     </svg>`;
     mid.appendChild(c);
   }
-  // stars at night
   if(state.theme==='night'){
     for(let i=0;i<50;i++){
       const s=document.createElement('span');
@@ -755,7 +813,26 @@ function renderMid(){
       mid.appendChild(s);
     }
   }
-  // birds when active (frequent usage)
+  if(state.theme==='rainy'){
+    const rain=document.createElement('div');
+    rain.style.cssText=`position:absolute;inset:0;pointer-events:none;overflow:hidden;opacity:.55`;
+    let svgRain = `<svg width="100%" height="100%" viewBox="0 0 1000 600" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">`;
+    for(let i=0;i<60;i++){
+      const x=Math.random()*1000, y=Math.random()*600, len=8+Math.random()*10;
+      svgRain += `<line x1="${x}" y1="${y}" x2="${x-3}" y2="${y+len}" stroke="#e6edf2" stroke-width="1" opacity="${.3+Math.random()*.4}"/>`;
+    }
+    svgRain += `</svg>`;
+    rain.innerHTML = svgRain;
+    mid.appendChild(rain);
+  }
+  if(state.theme==='dawn'){
+    for(let i=0;i<20;i++){
+      const s=document.createElement('span');
+      s.className='star';
+      s.style.cssText=`top:${Math.random()*30}%;left:${Math.random()*100}%;opacity:.4;animation-delay:${Math.random()*3}s`;
+      mid.appendChild(s);
+    }
+  }
   if(weather.tier>=3 && state.theme!=='night'){
     for(let i=0;i<2;i++){
       const b=document.createElement('div');
@@ -765,7 +842,6 @@ function renderMid(){
       mid.appendChild(b);
     }
   }
-  // northern lights for very consistent users
   if(weather.tier>=4 && state.theme==='night'){
     const aurora=document.createElement('div');
     aurora.style.cssText=`position:absolute;top:0;left:0;right:0;height:60%;
@@ -775,12 +851,10 @@ function renderMid(){
   }
 }
 
-/* mountains: rich multi-peak panorama, scrolls so active mountain is always visible */
 function renderMountains(){
   const svg = document.getElementById('fg-svg');
   const count = routeCount();
   const W=1000, H=600;
-
   const palettes = {
     snowy: {
       face1:'#3d5568', face2:'#52718a', snow1:'#c8e2f2', snow2:'#e2f4fc', snowhigh:'#f0f8ff',
@@ -802,46 +876,51 @@ function renderMountains(){
       tree1:'#10182a', tree2:'#1a2438', ground1:'#20304a', ground2:'#141e30',
       rock:'rgba(255,255,255,0.04)', flagcol:'#c9a24a'
     }
+    ,
+    pleasant: {
+      face1:'#5a7a5e', face2:'#7a9a78', snow1:'#d8e8c8', snow2:'#e8f2d8', snowhigh:'#f4f8e4',
+      tree1:'#2e5230', tree2:'#3e6840', ground1:'#6ea85a', ground2:'#4a7838',
+      rock:'rgba(255,255,255,0.06)', flagcol:'#e8a854'
+    },
+    sunny: {
+      face1:'#9a6a3a', face2:'#c08a4a', snow1:'#ffe0a8', snow2:'#fff0c8', snowhigh:'#fff8e0',
+      tree1:'#5a6e2a', tree2:'#7a8a3a', ground1:'#c8a85a', ground2:'#9a7a3a',
+      rock:'rgba(255,240,200,0.08)', flagcol:'#e85a3a'
+    },
+    rainy: {
+      face1:'#3a4654', face2:'#52606e', snow1:'#b8c4cc', snow2:'#cdd6dc', snowhigh:'#e0e6ea',
+      tree1:'#243038', tree2:'#34424c', ground1:'#4a5e4e', ground2:'#324638',
+      rock:'rgba(255,255,255,0.04)', flagcol:'#c9a24a'
+    },
+    dawn: {
+      face1:'#4a3854', face2:'#6a4e6e', snow1:'#f4c8c0', snow2:'#fad8c8', snowhigh:'#ffe8d4',
+      tree1:'#3a2840', tree2:'#503a58', ground1:'#9a6a78', ground2:'#6e4858',
+      rock:'rgba(255,220,200,0.06)', flagcol:'#ffd078'
+    }
   }[state.theme] || {};
 
   const active = climbsToday();
-  // panorama: each mountain slot 360px wide, scene viewport is W=1000
-  // active mountain always centered at W/2
   const mw = 360;
-  const totalW = count * mw + 300; // +300 so next peak peeks
-  // we'll use a viewBox wide enough to show all but pan the svg
+  const totalW = count * mw + 300;
   svg.setAttribute('viewBox', `0 0 ${totalW} ${H}`);
   svg.setAttribute('preserveAspectRatio','xMidYMax meet');
-
   let h='';
-
-  // far distance haze ridge (full width)
   h += buildFarRidge(totalW, H, palettes);
-
   for(let i=0;i<count;i++){
     const cx = 150 + i*mw + mw/2;
     const baseY = H - 45;
-    // vary peak height slightly per mountain for visual interest
     const peakVar = [0, 18, -10, 25, -5][i % 5];
-    const peakY = 110 + peakVar; // lower peak so summit + climber stays clearly in view
+    const peakY = 110 + peakVar;
     const halfW = 132 + (i % 3)*8;
-
     h += buildMountain(cx, peakY, baseY, halfW, palettes, i < active, i === active, i);
   }
-
-  // continuous ground strip
   h += `<path d="M0,${H-45} Q${totalW*0.25},${H-55} ${totalW*0.5},${H-42} Q${totalW*0.75},${H-52} ${totalW},${H-45} L${totalW},${H} L0,${H} Z" fill="${palettes.ground1}"/>`;
   h += `<path d="M0,${H-30} Q${totalW*0.33},${H-20} ${totalW*0.5},${H-32} Q${totalW*0.66},${H-18} ${totalW},${H-28} L${totalW},${H} L0,${H} Z" fill="${palettes.ground2}"/>`;
-
   svg.innerHTML = h;
-
-  // pan so active mountain is centered in the 1000-wide viewport
   const activeCx = 150 + active*mw + mw/2;
   const panX = Math.max(0, activeCx - W/2);
   svg.setAttribute('viewBox', `${panX} 0 ${W} ${H}`);
   svg.setAttribute('preserveAspectRatio','xMidYMax meet');
-
-  // store for climber — use active mountain's actual peak/halfW
   const aIdx = Math.min(active, count-1);
   const aPeakVar = [0, 18, -10, 25, -5][aIdx % 5];
   svg.dataset.activeCx = activeCx;
@@ -853,7 +932,6 @@ function renderMountains(){
 
 function buildFarRidge(W, H, p){
   const gy = H - 45;
-  // gentle wavy far ridge
   let pts = `0,${gy}`;
   const steps = 18;
   for(let i=0;i<=steps;i++){
@@ -868,16 +946,10 @@ function buildFarRidge(W, H, p){
 function buildMountain(cx, peakY, baseY, halfW, p, done, active, idx){
   let h='';
   const lx = cx - halfW, rx = cx + halfW;
-  // left (shadow) face
   h += `<polygon points="${cx},${peakY} ${lx},${baseY} ${cx},${baseY}" fill="${p.face1}"/>`;
-  // subtle inner shadow wedge on left
   h += `<polygon points="${cx},${peakY} ${lx},${baseY} ${lx+halfW*0.28},${baseY}" fill="rgba(0,0,0,0.11)"/>`;
-  // right face (lighter)
   h += `<polygon points="${cx},${peakY} ${cx},${baseY} ${rx},${baseY}" fill="${p.face2}"/>`;
-
-  // rock strata lines (3 each side)
   for(let r=0;r<3;r++){
-    const yFrac = 0.35 + r*0.2;
     const ly1 = lx + halfW*(0.15+r*0.08), ly2 = baseY - (baseY-peakY)*(0.28+r*0.18);
     const lx2 = cx - halfW*(0.12+r*0.06), lx2y = peakY + (baseY-peakY)*(0.22+r*0.16);
     h += `<line x1="${ly1.toFixed(1)}" y1="${ly2.toFixed(1)}" x2="${lx2.toFixed(1)}" y2="${lx2y.toFixed(1)}" stroke="${p.rock}" stroke-width="1.6"/>`;
@@ -885,37 +957,25 @@ function buildMountain(cx, peakY, baseY, halfW, p, done, active, idx){
     const rx2 = cx + halfW*(0.12+r*0.06), rx2y = peakY + (baseY-peakY)*(0.22+r*0.16);
     h += `<line x1="${ry1.toFixed(1)}" y1="${ry2.toFixed(1)}" x2="${rx2.toFixed(1)}" y2="${rx2y.toFixed(1)}" stroke="${p.rock}" stroke-width="1.4"/>`;
   }
-
-  // snow cap — three layers for depth
   const sw = halfW * 0.48;
   h += `<polygon points="${cx-sw},${peakY+sw*0.85} ${cx},${peakY} ${cx+sw},${peakY+sw*0.9} ${cx+sw*0.5},${peakY+sw*1.2} ${cx-sw*0.3},${peakY+sw*1.15}" fill="${p.snow1}" opacity="0.95"/>`;
   h += `<polygon points="${cx-sw*0.65},${peakY+sw*0.5} ${cx},${peakY} ${cx+sw*0.65},${peakY+sw*0.52} ${cx+sw*0.28},${peakY+sw*0.75} ${cx-sw*0.1},${peakY+sw*0.55}" fill="${p.snow2}"/>`;
   h += `<polygon points="${cx-sw*0.3},${peakY+sw*0.22} ${cx},${peakY} ${cx+sw*0.28},${peakY+sw*0.24}" fill="${p.snowhigh}"/>`;
-
-  // dashed climbing trail on left flank (the "rope")
   h += `<path ${active?'id="active-trail" ':''}d="M${cx},${baseY-6} C${cx-halfW*0.18},${baseY-80} ${cx-halfW*0.38},${baseY-160} ${cx-halfW*0.25},${peakY+sw*0.9}" fill="none" stroke="rgba(201,162,74,0.38)" stroke-width="1.8" stroke-dasharray="5,6"/>`;
-  // a second hint of rope (anchored at peak), helps reader see continuity
   if(active){
     h += `<path d="M${cx-halfW*0.25},${peakY+sw*0.9} L${cx},${peakY+sw*0.2}" fill="none" stroke="rgba(201,162,74,0.32)" stroke-width="1.6" stroke-dasharray="3,5"/>`;
   }
-
-  // trees at base
   const treePositions = [-halfW+12, -halfW+32, -halfW+18, halfW-16, halfW-36, halfW-22];
   const treeSizes = [28,34,24,30,36,26];
   treePositions.forEach((tx,ti) => {
     const tx2 = cx+tx, th = treeSizes[ti];
     h += `<polygon points="${tx2},${baseY} ${tx2+5},${baseY-th} ${tx2+10},${baseY}" fill="${ti%2===0?p.tree1:p.tree2}"/>`;
   });
-
-  // summit flag for completed mountains
   if(done){
     h += `<line x1="${cx}" y1="${peakY-2}" x2="${cx}" y2="${peakY-24}" stroke="#33445a" stroke-width="1.6"/>`;
     h += `<polygon points="${cx},${peakY-24} ${cx+18},${peakY-18} ${cx},${peakY-12}" fill="${p.flagcol}"/>`;
   }
-
-  // "Camp N" label
   h += `<text x="${cx}" y="${baseY+18}" text-anchor="middle" font-size="10" fill="rgba(15,23,34,0.38)" font-family="ui-serif,serif">Camp ${idx+1}</text>`;
-
   return h;
 }
 
@@ -923,43 +983,33 @@ let stepsLayer=null;
 function renderClimber(){
   const svg = document.getElementById('fg-svg');
   if(!svg || !svg.dataset.activeCx) return;
-  // remove old climber + steps
   svg.querySelectorAll('.climber, .step').forEach(n=>n.remove());
-
   const cx = +svg.dataset.activeCx;
   const peakY = +svg.dataset.peakY;
   const baseY = +svg.dataset.baseY;
   const halfW = +svg.dataset.halfW;
-
   let t = 0;
   if(timer.phase==='running' || timer.phase==='paused') t = 1 - timer.remaining/timer.duration;
   else if(timer.phase==='summit') t = 1;
   else t = 0;
-
-  // Climber follows the rope path exactly when an active trail exists.
-  // Falls back to peak/base anchors for idle or all-done states.
   const path = svg.querySelector('#active-trail');
   const celebrate = timer.phase==='summit';
   let px, py;
-  if (celebrate) {
+  if(celebrate){
     px = cx; py = peakY - 6;
-  } else if (path) {
+  } else if(path){
     const len = path.getTotalLength();
-    // path is drawn base→peak, so t=0 is base, t=1 is peak
     const pt = path.getPointAtLength(Math.max(0.001, Math.min(0.999, t)) * len);
     px = pt.x;
-    py = pt.y - 6; // sit on the rope, not under it
+    py = pt.y - 6;
   } else {
-    // idle (no active session) — wait at the base of the active mountain's trail
     px = cx; py = baseY - 6;
   }
-
   const ns = 'http://www.w3.org/2000/svg';
   const g = document.createElementNS(ns,'g');
   g.setAttribute('class','climber'+(celebrate?' celebrate':''));
   const scale = celebrate ? 1.8 : 1;
   g.setAttribute('transform',`translate(${px},${py}) scale(${scale})`);
-  // backpack
   g.innerHTML = `
     <ellipse cx="0" cy="0" rx="9" ry="4" fill="#0f1722" opacity=".22"/>
     <rect x="-5" y="-22" width="10" height="13" rx="3" fill="#a05a2c"/>
@@ -975,8 +1025,6 @@ function renderClimber(){
     <line x1="2"  y1="-7" x2="3"  y2="-1" stroke="#1f3a3c" stroke-width="2.3" stroke-linecap="round"/>
   `;
   svg.appendChild(g);
-
-  // footsteps trail (recent path)
   if(timer.phase==='running'){
     const stepEl = document.createElementNS(ns,'circle');
     stepEl.setAttribute('class','step');
@@ -989,13 +1037,12 @@ function renderClimber(){
   }
 }
 
-/* Camera pan: as climb progresses, gently shift scene upward */
 function updateCameraPan(){
   const fgL=document.getElementById('fg-layer');
   const mdL=document.getElementById('mid-layer');
   const skL=document.getElementById('sky-layer');
   if(!fgL||!mdL||!skL) return;
-  if(timer.phase!=='running' && timer.phase!=='paused' && timer.phase!=='summit') {
+  if(timer.phase!=='running' && timer.phase!=='paused' && timer.phase!=='summit'){
     fgL.style.transform='translateY(0)';
     mdL.style.transform='translateY(0)';
     skL.style.transform='translateY(0)';
@@ -1007,9 +1054,8 @@ function updateCameraPan(){
   skL.style.transform=`translateY(${-t*2}px)`;
 }
 
-/* ================ WEATHER (consistency-based, never punishing) ================ */
+/* ================ WEATHER ================ */
 function computeWeather(){
-  // tier 0..4 based on climbs in last 7 days
   const wk = climbsThisWeek().length;
   let tier = 0;
   if(wk>=1) tier=1;
@@ -1061,8 +1107,6 @@ function renderJourney(){
   document.getElementById('s-climbs').textContent = wk.length;
   document.getElementById('s-hours').textContent = hours.toFixed(1)+'h';
   document.getElementById('s-streak').textContent = streak();
-
-  // week svg
   const days=[];
   const today=new Date(); today.setHours(0,0,0,0);
   for(let i=6;i>=0;i--){
@@ -1082,8 +1126,6 @@ function renderJourney(){
     svg+=`<text x="${mid}" y="156" text-anchor="middle" font-size="11" fill="#7b8aa1">${d.label}</text>`;
   });
   document.getElementById('week-svg').innerHTML=svg;
-
-  // categories
   const totals = {};
   wk.forEach(c=>{ totals[c.category]=(totals[c.category]||0)+c.minutes/60; });
   const list = document.getElementById('cat-list');
@@ -1124,9 +1166,9 @@ function delCategory(i){
 
 /* ================ ROUTES VIEW ================ */
 const ROUTE_META = {
-  easy:{name:'Easy Trail', desc:'Light progress today'},
-  standard:{name:'Standard Trail', desc:'Steady journey'},
-  expedition:{name:'Expedition', desc:'Long climb ahead'},
+  easy:      {name:'Easy Trail',      desc:'Light progress today'},
+  standard:  {name:'Standard Trail',  desc:'Steady journey'},
+  expedition:{name:'Expedition',      desc:'Long climb ahead'},
 };
 function renderRoutePref(){
   const wrap=document.getElementById('route-pref-grid');
@@ -1167,31 +1209,86 @@ function updateRouteTitle(){
   document.getElementById('moment').textContent = timeOfDayLabel();
 }
 
+/* ================ PREMIUM ================ */
+function showPremiumModal(){
+  document.getElementById('premium-modal').style.display = 'flex';
+}
+function startCheckout(){
+  // BUYER: Create a Stripe Payment Link at dashboard.stripe.com and paste the URL below.
+  const STRIPE_LINK = 'https://buy.stripe.com/YOUR_STRIPE_LINK';
+  window.open(STRIPE_LINK, '_blank');
+}
+
 /* ================ ONBOARDING ================ */
-function openOnboarding(){ document.getElementById('onboarding').classList.add('show'); }
-function onboard(kind){
-  let user={kind};
-  if(kind==='guest'){ user.name='Guest climber'; }
-  if(kind==='google'){ user.name='Google traveler'; user.email='you@gmail.com'; }
-  if(kind==='email'){
-    const e=document.getElementById('ob-email').value.trim();
-    const n=document.getElementById('ob-name').value.trim()||'Climber';
-    if(!e){ document.getElementById('ob-email').focus(); return; }
-    user.name=n; user.email=e;
+function openOnboarding(){
+  document.getElementById('ob-status').textContent = '';
+  document.getElementById('onboarding').classList.add('show');
+}
+
+async function onboard(kind){
+  const status = document.getElementById('ob-status');
+  status.textContent = '';
+
+  if(kind === 'guest'){
+    state.user = {kind:'guest', name:'Guest climber'};
+    save();
+    document.getElementById('onboarding').classList.remove('show');
+    document.getElementById('save-banner').classList.remove('show');
+    renderUser();
+    return;
   }
-  state.user=user; save();
-  document.getElementById('onboarding').classList.remove('show');
-  document.getElementById('save-banner').classList.remove('show');
-  renderUser();
+
+  if(kind === 'google'){
+    const { error } = await supa.auth.signInWithOAuth({
+      provider: 'google',
+      options: { redirectTo: window.location.href }
+    });
+    if(error) status.textContent = 'Google sign-in failed: ' + error.message;
+    return;
+  }
+
+  if(kind === 'email'){
+    const email = document.getElementById('ob-email').value.trim();
+    const pass  = document.getElementById('ob-pass').value;
+    const name  = document.getElementById('ob-name').value.trim() || 'Climber';
+    if(!email){ document.getElementById('ob-email').focus(); return; }
+    if(!pass || pass.length < 6){ status.textContent = 'Password must be at least 6 characters.'; return; }
+
+    status.textContent = 'Signing in…';
+
+    // Try sign-in first; if no account exists, sign up
+    let { data, error } = await supa.auth.signInWithPassword({ email, password: pass });
+    if(error && error.message.includes('Invalid login')){
+      ({ data, error } = await supa.auth.signUp({
+        email, password: pass,
+        options: { data: { display_name: name } }
+      }));
+      if(!error) status.textContent = 'Account created! Check your email to confirm, then come back.';
+    }
+    if(error){ status.textContent = error.message; return; }
+
+    state.user = {kind:'email', name, email};
+    save();
+    document.getElementById('onboarding').classList.remove('show');
+    document.getElementById('save-banner').classList.remove('show');
+    renderUser();
+    await loadFromCloud();
+  }
 }
-function signOut(){
+
+async function signOut(){
   if(!confirm('Switch climbers? Your journey stays on this device.')) return;
-  state.user=null; save(); renderUser(); openOnboarding();
+  await supa.auth.signOut();
+  state.user = null;
+  save();
+  renderUser();
+  openOnboarding();
 }
+
 function renderUser(){
-  const u=state.user;
+  const u = state.user;
   document.getElementById('who').textContent = u?.name || 'Guest climber';
-  document.getElementById('who-sub').textContent = u?.email || (u?.kind==='guest'?'No account linked':'No account linked');
+  document.getElementById('who-sub').textContent = u?.email || (u?.kind==='guest' ? 'No account linked' : 'No account linked');
   document.getElementById('set-acc').textContent = u?.email ? `Signed in as ${u.email}` : 'Guest journey on this device';
 }
 function maybeOfferSave(){
@@ -1219,18 +1316,38 @@ document.querySelectorAll('nav .nav').forEach(b=>{
 });
 
 /* ================ WIRE UP ================ */
-document.getElementById('startBtn').onclick=startTimer;
-document.getElementById('resetBtn').onclick=resetTimer;
+document.getElementById('startBtn').onclick = startTimer;
+document.getElementById('resetBtn').onclick = resetTimer;
 document.querySelectorAll('#len-pills .pill').forEach(p=>{
   p.onclick=()=>setLen(Number(p.dataset.min));
 });
-document.getElementById('theme-sel').onchange=(e)=>{
-  state.theme=e.target.value; save(); buildScene();
+document.getElementById('theme-sel').onchange = (e) => {
+  const chosen = e.target.value;
+  if((chosen === 'desert' || chosen === 'night') && !state.premium){
+    e.target.value = state.theme; // snap back
+    showPremiumModal();
+    return;
+  }
+  state.theme = chosen;
+  save();
+  buildScene();
 };
 document.getElementById('sound-sel').onchange=(e)=>{ state.sound=e.target.value; save(); };
 
-/* init */
-function init(){
+/* ================ INIT ================ */
+async function init(){
+  // Check if Supabase has a session (e.g. returning after Google OAuth redirect)
+  const { data: { user } } = await supa.auth.getUser();
+  if(user && !state.user){
+    state.user = {
+      kind: 'google',
+      name: user.user_metadata?.full_name || user.email,
+      email: user.email
+    };
+    save();
+    await loadFromCloud();
+  }
+
   if(!state.user) openOnboarding();
   renderUser();
   setLen(state.sessionMin);
@@ -1240,8 +1357,8 @@ function init(){
   buildScene();
   renderTimer();
   renderJourney();
-  document.getElementById('theme-sel').value=state.theme;
-  document.getElementById('sound-sel').value=state.sound;
+  document.getElementById('theme-sel').value = state.theme;
+  document.getElementById('sound-sel').value = state.sound;
 }
 init();
 </script>

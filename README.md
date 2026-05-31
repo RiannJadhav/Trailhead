@@ -2,7 +2,7 @@
 
 A beautiful mountain-themed Pomodoro and goal tracker. Watch a tiny climber ascend a peak with every session you complete. Built as a production-ready two-file web app with real authentication and cloud sync.
 
-**[Live Demo →](https://trailhead.vercel.app)**
+**[Live Demo →](https://trailhead-livid.vercel.app/)**
 
 ---
 

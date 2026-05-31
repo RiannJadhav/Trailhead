@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Trailhead — Conquer Your Goals, One Peak at a Time</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Crimson+Pro:wght@200;300;400&display=swap');
+
+  :root{
+    --ink:#0f1722;
+    --ink-soft:#33445a;
+    --muted:#7b8aa1;
+    --paper:#f6f3ec;
+    --paper-2:#ebe6da;
+    --accent:#1e3a5f;
+    --gold:#c9a24a;
+    --teal:#3c6e71;
+    --line:rgba(15,23,34,.08);
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Crimson Pro', ui-serif, Georgia, serif;
+    overflow-x:hidden;
+  }
+
+  /* ── HERO ── */
+  .hero{
+    min-height:100vh;
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:80px 24px 120px;
+    overflow:hidden;
+  }
+
+  .hero-bg{
+    position:absolute;
+    inset:0;
+    background:linear-gradient(180deg,
+      #c8dde8 0%,
+      #dce8d8 45%,
+      #cfbfa8 75%,
+      #c4b090 100%);
+    z-index:0;
+  }
+
+  .mtn-far{position:absolute;bottom:0;left:0;width:100%;z-index:1;pointer-events:none;}
+  .mtn-mid{position:absolute;bottom:0;left:0;width:100%;z-index:2;pointer-events:none;}
+  .mtn-near{position:absolute;bottom:0;left:0;width:100%;z-index:3;pointer-events:none;}
+
+  .hero-sun{
+    position:absolute;
+    top:12%;right:18%;
+    width:100px;height:100px;
+    border-radius:50%;
+    background:radial-gradient(circle,#fff9e8 30%,rgba(255,243,200,.4) 65%,transparent 100%);
+    z-index:1;
+    animation:sunPulse 6s ease-in-out infinite;
+  }
+  @keyframes sunPulse{
+    0%,100%{transform:scale(1);opacity:.85}
+    50%{transform:scale(1.06);opacity:1}
+  }
+
+  .cloud{
+    position:absolute;z-index:2;opacity:.7;
+    animation:cloudDrift linear infinite;pointer-events:none;
+  }
+  @keyframes cloudDrift{
+    from{transform:translateX(-15%)}
+    to{transform:translateX(115%)}
+  }
+
+  .hero-content{
+    position:relative;z-index:10;max-width:680px;
+  }
+
+  .hero-eyebrow{
+    display:inline-block;
+    font-family:'Crimson Pro', serif;
+    font-size:11px;font-weight:300;
+    letter-spacing:.32em;text-transform:uppercase;
+    color:var(--accent);
+    background:rgba(255,255,255,.5);backdrop-filter:blur(8px);
+    padding:7px 18px;border-radius:99px;
+    border:1px solid rgba(30,58,95,.15);
+    margin-bottom:28px;
+    opacity:0;animation:fadeUp .8s ease .2s forwards;
+  }
+
+  .hero h1{
+    font-family:'Cormorant Garamond', ui-serif, Georgia, serif;
+    font-size:clamp(44px,7vw,88px);
+    font-weight:300;line-height:1.06;
+    color:#1e3a5f;letter-spacing:-.5px;
+    text-shadow:0 2px 24px rgba(255,255,255,.4);
+    opacity:0;animation:fadeUp .9s ease .35s forwards;
+  }
+  .hero h1 em{font-style:italic;color:var(--gold);}
+
+  .hero-sub{
+    margin:22px auto 0;max-width:460px;
+    font-size:clamp(17px,2.2vw,21px);font-weight:300;
+    color:#33445a;line-height:1.55;
+    opacity:0;animation:fadeUp .9s ease .5s forwards;
+  }
+
+  .hero-cta{
+    margin-top:40px;
+    display:flex;gap:14px;justify-content:center;flex-wrap:wrap;
+    opacity:0;animation:fadeUp .9s ease .65s forwards;
+  }
+
+  .btn-primary{
+    display:inline-block;padding:15px 38px;border-radius:99px;
+    background:linear-gradient(135deg,#1e3a5f,#2a4a72);
+    color:#f6f3ec;
+    font-family:'Crimson Pro',serif;font-size:17px;font-weight:400;letter-spacing:.04em;
+    text-decoration:none;
+    box-shadow:0 16px 40px -14px rgba(30,58,95,.55);
+    transition:filter .2s, transform .2s;
+  }
+  .btn-primary:hover{filter:brightness(1.15);transform:translateY(-2px)}
+
+  .btn-ghost{
+    display:inline-block;padding:15px 32px;border-radius:99px;
+    background:rgba(255,255,255,.45);backdrop-filter:blur(8px);
+    color:#1e3a5f;
+    font-family:'Crimson Pro',serif;font-size:17px;font-weight:400;letter-spacing:.04em;
+    text-decoration:none;border:1px solid rgba(30,58,95,.2);
+    transition:background .2s, transform .2s;
+  }
+  .btn-ghost:hover{background:rgba(255,255,255,.7);transform:translateY(-2px)}
+
+  .hero-footnote{
+    margin-top:18px;font-size:13px;color:#5a7090;letter-spacing:.04em;
+    opacity:0;animation:fadeUp .9s ease .8s forwards;
+  }
+
+  @keyframes fadeUp{
+    from{opacity:0;transform:translateY(18px)}
+    to{opacity:1;transform:translateY(0)}
+  }
+
+  /* ── FEATURES ── */
+  .features{background:var(--paper);padding:100px 24px;}
+  .features-inner{max-width:960px;margin:0 auto;}
+  .section-label{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);margin-bottom:14px;}
+  .section-title{
+    font-family:'Cormorant Garamond',serif;
+    font-size:clamp(32px,4vw,52px);font-weight:300;
+    color:var(--accent);line-height:1.1;margin-bottom:60px;
+  }
+  .feat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:28px;}
+  .feat{
+    background:#fff;border:1px solid var(--line);border-radius:20px;
+    padding:32px 28px;
+    box-shadow:0 20px 60px -30px rgba(15,23,34,.1);
+    transition:transform .22s, box-shadow .22s;
+  }
+  .feat:hover{transform:translateY(-4px);box-shadow:0 30px 70px -28px rgba(15,23,34,.16);}
+  .feat-icon{font-size:30px;margin-bottom:18px;display:block;}
+  .feat h3{
+    font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:500;
+    margin-bottom:10px;color:var(--accent);
+  }
+  .feat p{font-size:16px;color:var(--ink-soft);line-height:1.6;font-weight:300;}
+
+  /* ── THEMES ── */
+  .themes{
+    background:var(--paper-2);padding:100px 24px;
+    border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  }
+  .themes-inner{max-width:960px;margin:0 auto;}
+  .themes-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-top:48px;}
+  .theme-card{
+    border-radius:16px;overflow:hidden;aspect-ratio:4/3;position:relative;
+    box-shadow:0 16px 40px -16px rgba(15,23,34,.22);transition:transform .22s;
+  }
+  .theme-card:hover{transform:scale(1.03)}
+  .theme-card .bg{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:14px;}
+  .theme-card .label{
+    font-size:12px;letter-spacing:.18em;text-transform:uppercase;
+    color:rgba(255,255,255,.9);text-shadow:0 1px 4px rgba(0,0,0,.4);
+    font-family:'Crimson Pro',serif;
+  }
+  .theme-card .lock{
+    position:absolute;top:10px;right:10px;
+    background:rgba(201,162,74,.9);color:#1a1208;
+    font-size:10px;padding:3px 8px;border-radius:99px;
+    letter-spacing:.12em;text-transform:uppercase;font-family:'Crimson Pro',serif;
+  }
+  .t-snowy   {background:linear-gradient(180deg,#a8c8e0,#dfe7d8 65%,#cdb593)}
+  .t-forest  {background:linear-gradient(180deg,#9bb5c9,#c7d3b8 65%,#7a6a52)}
+  .t-pleasant{background:linear-gradient(180deg,#b9dff0,#e8f1d6 65%,#bcd7a8)}
+  .t-sunny   {background:linear-gradient(180deg,#7ec4e8,#ffd58a 65%,#f6b15a)}
+  .t-rainy   {background:linear-gradient(180deg,#6a7886,#8a96a4 65%,#a8b2bc)}
+  .t-dawn    {background:linear-gradient(180deg,#f7c6a0,#f29c8c 65%,#9a6ea0)}
+  .t-desert  {background:linear-gradient(180deg,#e8b88a,#d4a574 65%,#a05a2c)}
+  .t-night   {background:linear-gradient(180deg,#0f1a2e,#1e2a44 65%,#2a3852)}
+
+  /* ── PITCH ── */
+  .pitch{padding:100px 24px;background:var(--paper);}
+  .pitch-inner{max-width:760px;margin:0 auto;}
+  .pitch-box{
+    background:#fff;border:1px solid var(--line);border-radius:24px;
+    padding:48px 44px;
+    box-shadow:0 30px 80px -30px rgba(15,23,34,.12);
+  }
+  .pitch-box h2{
+    font-family:'Cormorant Garamond',serif;
+    font-size:clamp(28px,3.5vw,44px);font-weight:300;
+    color:var(--accent);margin-bottom:20px;line-height:1.15;
+  }
+  .pitch-box p{font-size:17px;color:var(--ink-soft);line-height:1.65;font-weight:300;margin-bottom:14px;}
+  .pitch-list{list-style:none;margin:24px 0 32px;display:flex;flex-direction:column;gap:12px;}
+  .pitch-list li{display:flex;align-items:flex-start;gap:12px;font-size:16px;color:var(--ink-soft);line-height:1.5;}
+  .pitch-list li::before{content:'▲';font-size:8px;color:var(--gold);margin-top:5px;flex-shrink:0;}
+  .pitch-cta{display:flex;align-items:center;gap:18px;flex-wrap:wrap;}
+  .price-note{font-size:14px;color:var(--muted);line-height:1.5;}
+
+  /* ── FOOTER ── */
+  footer{
+    padding:40px 24px;text-align:center;border-top:1px solid var(--line);
+    font-size:14px;color:var(--muted);font-weight:300;letter-spacing:.04em;
+  }
+  footer a{color:var(--accent);text-decoration:none;}
+  footer a:hover{text-decoration:underline;}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-sun"></div>
+
+  <div class="cloud" style="top:14%;left:-8%;animation-duration:110s">
+    <svg width="160" height="50" viewBox="0 0 160 50">
+      <ellipse cx="50" cy="32" rx="40" ry="14" fill="#fff" opacity=".9"/>
+      <ellipse cx="90" cy="26" rx="50" ry="18" fill="#fff"/>
+      <ellipse cx="130" cy="33" rx="32" ry="12" fill="#fff" opacity=".85"/>
+    </svg>
+  </div>
+  <div class="cloud" style="top:22%;left:-12%;animation-duration:150s;animation-delay:-60s;opacity:.5">
+    <svg width="120" height="38" viewBox="0 0 120 38">
+      <ellipse cx="40" cy="26" rx="32" ry="11" fill="#fff"/>
+      <ellipse cx="72" cy="20" rx="38" ry="14" fill="#fff"/>
+      <ellipse cx="102" cy="27" rx="24" ry="10" fill="#fff"/>
+    </svg>
+  </div>
+
+  <svg class="mtn-far" viewBox="0 0 1440 320" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <polygon points="0,320 120,200 260,270 420,180 580,250 740,170 900,240 1080,160 1260,220 1440,175 1440,320"
+      fill="#8aa6bc" opacity=".35"/>
+  </svg>
+
+  <svg class="mtn-mid" viewBox="0 0 1440 300" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <polygon points="0,300 180,140 360,220 540,100 720,200 900,120 1080,210 1260,130 1440,180 1440,300"
+      fill="#5a7a92" opacity=".5"/>
+    <polygon points="525,108 540,100 555,108 548,118 532,118" fill="#f0f8ff" opacity=".9"/>
+    <polygon points="885,128 900,120 915,128 908,138 892,138" fill="#f0f8ff" opacity=".9"/>
+    <polygon points="1245,138 1260,130 1275,138 1268,148 1252,148" fill="#f0f8ff" opacity=".9"/>
+  </svg>
+
+  <svg class="mtn-near" viewBox="0 0 1440 260" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <polygon points="0,260 0,220 200,80 400,180 600,60 800,160 1000,70 1200,155 1440,90 1440,260"
+      fill="#3d5568" opacity=".75"/>
+    <polygon points="575,68 600,60 625,68 614,82 586,82" fill="#e2f4fc" opacity=".95"/>
+    <polygon points="972,78 1000,70 1028,78 1014,92 986,92" fill="#e2f4fc" opacity=".95"/>
+    <g transform="translate(600,54)" opacity=".8">
+      <circle cx="0" cy="-10" r="3" fill="#f1c79a"/>
+      <rect x="-2" y="-8" width="4" height="7" rx="1" fill="#3c6e71"/>
+      <line x1="-2" y1="-1" x2="-3" y2="4" stroke="#1f3a3c" stroke-width="1.5"/>
+      <line x1="2" y1="-1" x2="3" y2="4" stroke="#1f3a3c" stroke-width="1.5"/>
+    </g>
+    <rect x="0" y="240" width="1440" height="20" fill="#4a7248" opacity=".6"/>
+    <path d="M0,250 Q360,235 720,252 Q1080,268 1440,248 L1440,260 L0,260 Z" fill="#325a34" opacity=".5"/>
+  </svg>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow">Focus Timer · Goal Tracker · Visual Journey</div>
+    <h1>Conquer Your Goals,<br/><em>One Peak at a Time.</em></h1>
+    <p class="hero-sub">The visual focus timer for indie creators. Watch a tiny climber ascend a mountain with every session you complete.</p>
+    <div class="hero-cta">
+      <a href="app.html" class="btn-primary">Begin Your Expedition →</a>
+      <a href="#features" class="btn-ghost">See how it works</a>
+    </div>
+    <p class="hero-footnote">Free to start · No account required · Cloud sync available</p>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+  <div class="features-inner">
+    <div class="section-label">What's inside</div>
+    <h2 class="section-title">Everything a focused<br/>person needs.</h2>
+    <div class="feat-grid">
+      <div class="feat">
+        <span class="feat-icon">▲</span>
+        <h3>Visual Focus Timer</h3>
+        <p>A Pomodoro-style timer where every completed session moves a climber up a mountain peak. Progress you can actually see.</p>
+      </div>
+      <div class="feat">
+        <span class="feat-icon">◷</span>
+        <h3>Journey Tracking</h3>
+        <p>Log sessions across custom goal trails — deep work, fitness, learning, creative projects. See your weekly range at a glance.</p>
+      </div>
+      <div class="feat">
+        <span class="feat-icon">☁</span>
+        <h3>Cloud Sync</h3>
+        <p>Sign in once and your entire journey follows you across every device. Never lose a session again.</p>
+      </div>
+      <div class="feat">
+        <span class="feat-icon">⛰</span>
+        <h3>Eight Environments</h3>
+        <p>Snowy peaks, forest trails, rainy passes, desert canyons, dawn glows, night climbs — each with dynamic weather and atmosphere.</p>
+      </div>
+      <div class="feat">
+        <span class="feat-icon">◎</span>
+        <h3>Flexible Routes</h3>
+        <p>Easy, Standard, or Expedition — set how many climbs each day demands and adjust it as your pace changes.</p>
+      </div>
+      <div class="feat">
+        <span class="feat-icon">✦</span>
+        <h3>Premium Paywall Built In</h3>
+        <p>Two themes locked behind a gorgeous upgrade modal. Stripe-ready from day one — just paste your Payment Link.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- THEMES -->
+<section class="themes">
+  <div class="themes-inner">
+    <div class="section-label">Environments</div>
+    <h2 class="section-title">Eight worlds to<br/>climb through.</h2>
+    <div class="themes-grid">
+      <div class="theme-card"><div class="bg t-snowy"><span class="label">Snowy Peaks</span></div></div>
+      <div class="theme-card"><div class="bg t-forest"><span class="label">Forest Mountain</span></div></div>
+      <div class="theme-card"><div class="bg t-pleasant"><span class="label">Pleasant Meadow</span></div></div>
+      <div class="theme-card"><div class="bg t-sunny"><span class="label">Sunny Ridge</span></div></div>
+      <div class="theme-card"><div class="bg t-rainy"><span class="label">Rainy Pass</span></div></div>
+      <div class="theme-card"><div class="bg t-dawn"><span class="label">Dawn Glow</span></div></div>
+      <div class="theme-card"><div class="bg t-desert"><span class="label">Desert Canyon</span><span class="lock">Premium</span></div></div>
+      <div class="theme-card"><div class="bg t-night"><span class="label">Night Climb</span><span class="lock">Premium</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="pitch">
+  <div class="pitch-inner">
+    <div class="pitch-box">
+      <h2>Your goals deserve<br/>more than a checklist.</h2>
+      <p>Most productivity apps reduce your ambitions to a list of ticked boxes. Trailhead gives them scale — a mountain to climb, a climber to root for, and a week's worth of progress you can actually see.</p>
+      <p>Start free, no account needed. When you're ready to save your journey across devices, sign in and your entire expedition syncs to the cloud.</p>
+      <ul class="pitch-list">
+        <li>Set your session length and watch your climber ascend in real time</li>
+        <li>Allocate each session to a goal — work, fitness, learning, creative projects</li>
+        <li>Build a streak, watch the weather clear, earn summit flags</li>
+        <li>Your journey saves automatically — pick up exactly where you left off</li>
+      </ul>
+      <div class="pitch-cta">
+        <a href="app.html" class="btn-primary" style="font-size:20px;padding:20px 48px;box-shadow:0 20px 50px -16px rgba(30,58,95,.6)">Embark on your journey →</a>
+        <p class="price-note">Free to start.<br/>No account required.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  Trailhead · Built for focused people · <a href="app.html">Start your journey</a>
+</footer>
+
+</body>
+</html>

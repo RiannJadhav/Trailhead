@@ -1339,6 +1339,14 @@ document.getElementById('sound-sel').onchange=(e)=>{ state.sound=e.target.value;
 
 /* ================ INIT ================ */
 async function init(){
+  // If coming from landing page sign-in button, force onboarding open
+  const params = new URLSearchParams(window.location.search);
+  if(params.get('signin') === 'true'){
+    // Clear user so onboarding shows regardless of saved state
+    state.user = null;
+    save();
+  }
+
   // Check if Supabase has a session (e.g. returning after Google OAuth redirect)
   const { data: { user } } = await supa.auth.getUser();
   if(user && !state.user){

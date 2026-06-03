@@ -17,11 +17,37 @@
   }
   *{box-sizing:border-box}
   html,body{margin:0;height:100%;background:var(--paper);color:var(--ink);overflow:hidden}
-  body{display:flex;height:100vh;width:100vw}
   button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   input{font:inherit;color:inherit}
 
-  /* ---------- ONBOARDING (calm mountain + lake) ---------- */
+  /* ── MOBILE LAYOUT ── */
+  body{display:flex;height:100vh;width:100vw;flex-direction:row}
+  @media(max-width:680px){
+    body{flex-direction:column}
+    aside{
+      width:100%!important;height:auto!important;flex-direction:row!important;
+      padding:10px 16px!important;border-right:none!important;
+      border-bottom:1px solid var(--line)!important;
+      align-items:center!important;gap:0!important;
+    }
+    .brand{margin-bottom:0!important;margin-right:auto}
+    .brand-sub{display:none}
+    nav{display:flex;flex-direction:row;gap:2px;margin:0 8px}
+    nav button.nav{padding:8px 10px;font-size:12px;gap:5px}
+    nav button.nav .ico{display:none}
+    .side-foot{display:none}
+    #climb .controls{grid-template-columns:1fr!important;gap:10px!important;padding:10px 14px!important}
+    .hud-timer .time{font-size:52px!important}
+    #journey{padding:18px!important}
+    .j-grid{grid-template-columns:1fr!important}
+    .stat-row{grid-template-columns:repeat(3,1fr)}
+    #routes{padding:18px!important}
+    .route-pref-grid{grid-template-columns:1fr!important}
+    #settings{padding:18px!important}
+    .timer-actions{justify-content:center!important}
+  }
+
+  /* ── ONBOARDING ── */
   #onboarding{
     position:fixed;inset:0;z-index:50;display:none;
     align-items:center;justify-content:center;
@@ -42,9 +68,10 @@
     background:rgba(255,255,255,.78);backdrop-filter:blur(18px);
     border:1px solid rgba(30,58,95,.10);text-align:center;
     box-shadow:0 30px 80px -40px rgba(30,58,95,.35);
+    max-height:90vh;overflow-y:auto;
   }
   .ob-card h1{font-size:34px;margin:0 0 6px;letter-spacing:.5px;color:#1e3a5f;font-weight:600}
-  .ob-card p{margin:0 0 24px;color:var(--ink-soft);font-size:14px;line-height:1.5}
+  .ob-card p{margin:0 0 20px;color:var(--ink-soft);font-size:14px;line-height:1.5}
   .ob-btn{display:block;width:100%;padding:13px 16px;border-radius:12px;margin:8px 0;
     background:rgba(180,210,232,.32);border:1px solid rgba(74,144,194,.22);
     color:var(--ink);font-size:15px;transition:.2s}
@@ -59,7 +86,7 @@
   .ob-foot{font-size:11px;color:var(--muted);margin-top:14px;letter-spacing:.05em}
   #ob-status{font-size:13px;color:#c9a24a;margin:8px 0;min-height:20px}
 
-  /* save journey banner */
+  /* ── SAVE BANNER ── */
   #save-banner{
     position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);
     z-index:40;background:rgba(15,23,34,.92);color:#f6f3ec;
@@ -73,7 +100,26 @@
   #save-banner .save-yes{background:#c9a24a;color:#1a1208}
   #save-banner .save-no{color:#8d99ad}
 
-  /* ---------- SIDEBAR ---------- */
+  /* ── BREAK OVERLAY ── */
+  #break-overlay{
+    position:fixed;inset:0;z-index:48;display:none;
+    align-items:center;justify-content:center;
+    background:rgba(15,23,34,.6);backdrop-filter:blur(6px);
+  }
+  #break-overlay.show{display:flex}
+  .break-card{
+    width:min(360px,92vw);background:#fff;border-radius:22px;padding:32px 28px;
+    text-align:center;box-shadow:0 30px 80px -30px rgba(15,23,34,.4);
+    border:1px solid rgba(15,23,34,.06);
+  }
+  .break-icon{font-size:38px;margin-bottom:10px}
+  .break-card h2{font-size:22px;font-weight:500;color:var(--accent);margin:0 0 6px}
+  .break-card p{font-size:14px;color:var(--muted);margin:0 0 18px}
+  .break-time{font-size:52px;font-weight:300;color:var(--ink);font-variant-numeric:tabular-nums;margin:10px 0 18px;letter-spacing:2px}
+  .break-btn{padding:11px 24px;border-radius:99px;font-size:14px;background:var(--accent);color:#fff;margin:4px}
+  .break-skip{font-size:12px;color:var(--muted);text-decoration:underline;margin-top:8px;display:block;cursor:pointer}
+
+  /* ── SIDEBAR ── */
   aside{
     width:240px;flex-shrink:0;background:var(--paper-2);
     padding:28px 22px;display:flex;flex-direction:column;gap:6px;
@@ -96,13 +142,16 @@
   .side-foot{margin-top:auto;padding-top:20px;border-top:1px solid var(--line);font-size:12px;color:var(--muted)}
   .side-foot b{color:var(--ink);font-weight:600;display:block;font-size:13px}
   .side-foot button{font-size:11px;color:var(--muted);text-decoration:underline;padding:4px 0;margin-top:4px}
+  .streak-badge{display:inline-block;background:rgba(201,162,74,.15);color:var(--gold);
+    border:1px solid rgba(201,162,74,.3);border-radius:99px;
+    font-size:11px;padding:2px 8px;margin-top:4px}
 
-  /* ---------- MAIN ---------- */
+  /* ── MAIN ── */
   main{flex:1;overflow:hidden;position:relative;display:flex;flex-direction:column}
   .view{display:none;flex:1;overflow:hidden}
   .view.active{display:flex}
 
-  /* ---------- CLIMB VIEW (mountain-first) ---------- */
+  /* ── CLIMB VIEW ── */
   #climb{flex-direction:column;position:relative}
   .scene{
     position:relative;flex:1 1 70%;min-height:0;overflow:hidden;
@@ -111,8 +160,6 @@
   }
   .scene svg.layer{position:absolute;inset:0;width:100%;height:100%;display:block}
   .scene .pan-wrap{position:absolute;inset:0;transition:transform 1s ease}
-
-  /* HUD over scene */
   .hud-top{
     position:absolute;top:18px;left:20px;right:20px;
     display:flex;justify-content:space-between;align-items:flex-start;
@@ -124,7 +171,6 @@
     background:rgba(15,23,34,.28);padding:7px 12px;border-radius:99px;
     font-size:12px;backdrop-filter:blur(6px);pointer-events:auto;
   }
-
   .hud-timer{
     position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
     text-align:center;color:#f6f3ec;text-shadow:0 2px 10px rgba(0,0,0,.4);
@@ -136,8 +182,6 @@
   .hud-timer .pip{width:8px;height:8px;border-radius:99px;background:rgba(255,255,255,.35);transition:.3s}
   .hud-timer .pip.done{background:#c9a24a;box-shadow:0 0 8px rgba(201,162,74,.6)}
   .hud-timer .pip.current{background:#f6f3ec}
-
-  /* control strip */
   .controls{
     flex:0 0 auto;padding:14px 28px 18px;background:var(--paper);
     border-top:1px solid var(--line);
@@ -145,23 +189,18 @@
   }
   .ctl-block .label{font-size:10px;letter-spacing:.22em;color:var(--muted);text-transform:uppercase;margin-bottom:6px}
   .pill-row{display:flex;gap:6px;flex-wrap:wrap}
-  .pill{
-    padding:6px 12px;border-radius:99px;background:rgba(15,23,34,.05);
-    font-size:12.5px;color:var(--ink-soft);transition:.18s;border:1px solid transparent;
-  }
+  .pill{padding:6px 12px;border-radius:99px;background:rgba(15,23,34,.05);
+    font-size:12.5px;color:var(--ink-soft);transition:.18s;border:1px solid transparent;}
   .pill:hover{background:rgba(15,23,34,.09)}
   .pill.active{background:rgba(201,162,74,.18);color:var(--accent-2);border-color:rgba(201,162,74,.5);
     box-shadow:0 0 0 3px rgba(201,162,74,.08)}
   .route-row{display:flex;gap:6px}
-  .route-card{
-    flex:1;padding:9px 10px;border-radius:11px;background:rgba(15,23,34,.05);
-    text-align:center;transition:.18s;border:1px solid transparent;
-  }
+  .route-card{flex:1;padding:9px 10px;border-radius:11px;background:rgba(15,23,34,.05);
+    text-align:center;transition:.18s;border:1px solid transparent;}
   .route-card:hover{background:rgba(15,23,34,.09)}
   .route-card.active{background:#fff;border-color:rgba(60,110,113,.4);box-shadow:0 6px 20px -10px rgba(60,110,113,.4)}
   .route-card .rn{font-size:13px;color:var(--ink);font-weight:600}
   .route-card .rc{font-size:11px;color:var(--muted);margin-top:1px}
-
   .timer-actions{display:flex;gap:10px;justify-content:flex-end;align-items:center}
   .btn{padding:11px 22px;border-radius:99px;font-size:14px;transition:.2s}
   .btn.primary{background:var(--ink);color:var(--paper)}
@@ -169,7 +208,7 @@
   .btn.ghost{color:var(--muted)}
   .btn.ghost:hover{color:var(--ink)}
 
-  /* ---------- JOURNEY VIEW ---------- */
+  /* ── JOURNEY VIEW ── */
   #journey{flex-direction:column;overflow:auto;padding:36px 44px;background:var(--paper)}
   .j-head{margin-bottom:24px}
   .j-head .eyebrow{font-size:11px;letter-spacing:.24em;color:var(--muted);text-transform:uppercase}
@@ -182,7 +221,10 @@
   .stat{background:#fff;padding:16px;border-radius:14px;border:1px solid var(--line);text-align:center}
   .stat .v{font-size:32px;color:var(--accent);font-weight:500}
   .stat .l{font-size:10px;letter-spacing:.2em;color:var(--muted);text-transform:uppercase;margin-top:2px}
-
+  .pb-row{margin-top:14px;padding-top:14px;border-top:1px solid var(--line);display:flex;gap:10px;flex-wrap:wrap}
+  .pb-chip{background:rgba(60,110,113,.08);border:1px solid rgba(60,110,113,.18);
+    border-radius:10px;padding:8px 12px;font-size:12px;color:var(--ink-soft)}
+  .pb-chip b{color:var(--accent);font-size:14px;display:block}
   .cat-row{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:1px solid var(--line)}
   .cat-row:last-child{border-bottom:0}
   .cat-dot{width:10px;height:10px;border-radius:99px;flex-shrink:0}
@@ -200,11 +242,9 @@
   .add-cat input{flex:1;padding:9px 12px;border-radius:10px;border:1px solid var(--line);background:#fafaf6;outline:none;font-size:13px}
   .add-cat input:focus{border-color:var(--accent)}
   .add-cat button{padding:8px 14px;border-radius:10px;background:var(--accent);color:#fff;font-size:13px}
-
-  /* week bars */
   .week-svg{width:100%;height:160px}
 
-  /* ---------- ROUTE PREFERENCES VIEW ---------- */
+  /* ── ROUTES VIEW ── */
   #routes{flex-direction:column;overflow:auto;padding:36px 44px;background:var(--paper)}
   .route-pref-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:24px}
   .route-pref{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:24px;text-align:center;box-shadow:var(--shadow)}
@@ -216,37 +256,32 @@
   .route-pref .ctrl .num{font-size:42px;min-width:60px;color:var(--accent);font-weight:500;font-variant-numeric:tabular-nums}
   .route-pref .unit{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
 
-  /* ---------- SETTINGS VIEW ---------- */
+  /* ── SETTINGS VIEW ── */
   #settings{flex-direction:column;overflow:auto;padding:36px 44px;background:var(--paper)}
   .setting-row{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--line)}
   .setting-row:last-child{border:0}
   .setting-row .name{font-size:14px}
   .setting-row .hint{font-size:12px;color:var(--muted);margin-top:2px}
 
-  /* climber celebration */
+  /* ── ANIMATIONS ── */
   @keyframes raise{0%{transform:translateY(0)}50%{transform:translateY(-3px)}100%{transform:translateY(0)}}
   .celebrate{animation:raise 1.8s ease-in-out infinite}
-
-  /* footsteps */
   @keyframes fadestep{0%{opacity:.6}100%{opacity:0}}
-
-  /* cloud drift */
   @keyframes drift{from{transform:translateX(-10%)}to{transform:translateX(110%)}}
   .cloud{position:absolute;opacity:.85;animation:drift linear infinite}
-
-  /* twinkle */
   @keyframes twinkle{0%,100%{opacity:.3}50%{opacity:1}}
   .star{position:absolute;width:2px;height:2px;background:#fff;border-radius:99px;animation:twinkle 3s ease-in-out infinite}
-
-  /* bird */
   @keyframes flap{0%,100%{transform:scaleY(1)}50%{transform:scaleY(.4)}}
   .bird{position:absolute;animation:drift 60s linear infinite}
   .bird svg{animation:flap 1.2s ease-in-out infinite}
+  @keyframes fogDrift{0%{opacity:.25;transform:translateX(-5%)}50%{opacity:.45}100%{opacity:.25;transform:translateX(5%)}}
+  .fog{position:absolute;inset:0;background:linear-gradient(180deg,rgba(180,190,200,.55),transparent 60%);
+    animation:fogDrift 12s ease-in-out infinite;pointer-events:none}
 </style>
 </head>
 <body>
 
-<!-- ============ ONBOARDING ============ -->
+<!-- ONBOARDING -->
 <div id="onboarding">
   <svg id="ob-scene" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
     <defs>
@@ -266,86 +301,79 @@
     <rect width="1600" height="900" fill="url(#obSky)"/>
     <circle cx="1180" cy="200" r="80" fill="#fff6e0" opacity="0.7"/>
     <circle cx="1180" cy="200" r="50" fill="#fff8e8" opacity="0.95"/>
-    <g class="cloud" opacity="0.85">
-      <ellipse cx="200" cy="180" rx="70" ry="14" fill="#fff"/>
-      <ellipse cx="260" cy="172" rx="50" ry="12" fill="#fff"/>
-    </g>
-    <g class="cloud b" opacity="0.7">
-      <ellipse cx="600" cy="240" rx="90" ry="16" fill="#fff"/>
-      <ellipse cx="680" cy="232" rx="60" ry="13" fill="#fff"/>
-    </g>
+    <g class="cloud" opacity="0.85"><ellipse cx="200" cy="180" rx="70" ry="14" fill="#fff"/><ellipse cx="260" cy="172" rx="50" ry="12" fill="#fff"/></g>
+    <g class="cloud b" opacity="0.7"><ellipse cx="600" cy="240" rx="90" ry="16" fill="#fff"/><ellipse cx="680" cy="232" rx="60" ry="13" fill="#fff"/></g>
     <polygon points="0,560 180,400 320,500 480,360 640,490 820,380 980,520 1180,400 1360,500 1600,420 1600,560" fill="url(#obFar)" opacity="0.85"/>
     <polygon points="120,560 360,260 600,560" fill="url(#obMid)"/>
     <polygon points="320,560 520,310 720,560" fill="#6a8aa2"/>
     <polygon points="540,560 820,220 1100,560" fill="url(#obMid)"/>
     <polygon points="900,560 1140,300 1380,560" fill="#6a8aa2"/>
-    <polygon points="1200,560 1420,340 1600,560 1600,560" fill="url(#obMid)"/>
+    <polygon points="1200,560 1420,340 1600,560" fill="url(#obMid)"/>
     <polygon points="335,300 360,260 385,300 372,318 348,318" fill="#f4faff"/>
-    <polygon points="495,348 520,310 545,348 530,362 510,362" fill="#f0f6fb"/>
     <polygon points="785,265 820,220 855,265 838,285 802,285" fill="#f6fbff"/>
     <polygon points="1110,340 1140,300 1170,340 1156,358 1126,358" fill="#f0f6fb"/>
-    <polygon points="1395,378 1420,340 1445,378 1432,394 1408,394" fill="#f4faff"/>
     <rect x="0" y="558" width="1600" height="342" fill="url(#obLake)"/>
     <g opacity="0.28">
       <polygon points="120,558 360,858 600,558" fill="#6a8aa2"/>
       <polygon points="540,558 820,898 1100,558" fill="#6a8aa2"/>
-      <polygon points="1200,558 1420,778 1600,558" fill="#6a8aa2"/>
     </g>
     <g stroke="#fff" stroke-linecap="round" fill="none">
-      <path class="ripple"   d="M120 660 q 30 -4 60 0 t 60 0 t 60 0" stroke-width="1.2" opacity=".5"/>
+      <path class="ripple" d="M120 660 q 30 -4 60 0 t 60 0 t 60 0" stroke-width="1.2" opacity=".5"/>
       <path class="ripple b" d="M780 720 q 40 -5 80 0 t 80 0 t 80 0" stroke-width="1.2" opacity=".5"/>
-      <path class="ripple"   d="M260 790 q 35 -4 70 0 t 70 0 t 70 0 t 70 0" stroke-width="1" opacity=".4"/>
-      <path class="ripple b" d="M1000 820 q 35 -4 70 0 t 70 0 t 70 0" stroke-width="1" opacity=".4"/>
-    </g>
-    <g opacity="0.55">
-      <path d="M740 700 q 18 8 36 0 l -6 6 q -12 4 -24 0 z" fill="#2a3a4a"/>
-      <line x1="758" y1="700" x2="758" y2="678" stroke="#2a3a4a" stroke-width="1.2"/>
-      <polygon points="758,680 770,700 758,700" fill="#2a3a4a" opacity=".7"/>
     </g>
   </svg>
   <div class="ob-card">
     <h1>Trailhead</h1>
     <p>Every great climb begins at a quiet trailhead.<br/>How would you like to start your journey?</p>
     <button class="ob-btn primary" onclick="onboard('guest')">Continue as guest</button>
-    <button class="ob-btn" onclick="onboard('google')">
-      <span style="margin-right:6px">◎</span> Continue with Google
-    </button>
+    <button class="ob-btn" onclick="onboard('google')"><span style="margin-right:6px">◎</span> Continue with Google</button>
     <div class="ob-divider">— or with email —</div>
-    <input id="ob-email" class="ob-input" type="email" placeholder="you@trail.com" />
-    <input id="ob-pass" class="ob-input" type="password" placeholder="Password" />
-    <input id="ob-name" class="ob-input" placeholder="What should we call you?" />
+    <input id="ob-email" class="ob-input" type="email" placeholder="you@trail.com"/>
+    <input id="ob-pass" class="ob-input" type="password" placeholder="Password (min 6 characters)"/>
+    <input id="ob-name" class="ob-input" placeholder="What should we call you?"/>
     <button class="ob-btn" onclick="onboard('email')">Begin journey</button>
     <div id="ob-status"></div>
     <p class="ob-foot">Guest journeys live only on this device.</p>
   </div>
 </div>
 
-<!-- save-journey banner -->
+<!-- SAVE BANNER -->
 <div id="save-banner">
   <span>Save your journey across devices?</span>
   <button class="save-yes" onclick="openOnboarding()">Save journey</button>
   <button class="save-no" onclick="dismissSave()">Not now</button>
 </div>
 
-<!-- post-climb category attribution modal -->
+<!-- BREAK OVERLAY -->
+<div id="break-overlay">
+  <div class="break-card">
+    <div class="break-icon">🏕️</div>
+    <h2>Rest at base camp</h2>
+    <p>You earned it. Take a breath before the next ascent.</p>
+    <div class="break-time" id="break-time">5:00</div>
+    <button class="break-btn" onclick="endBreak()">Skip rest, begin next climb</button>
+    <span class="break-skip" onclick="endBreak()">I'm ready now</span>
+  </div>
+</div>
+
+<!-- ATTRIBUTION MODAL -->
 <div id="attrib-modal" style="position:fixed;inset:0;z-index:45;display:none;align-items:center;justify-content:center;
   background:radial-gradient(ellipse at 50% 30%, rgba(255,247,220,.55), rgba(15,23,34,.55));backdrop-filter:blur(6px)">
   <div style="width:min(440px,92vw);background:#fff;border-radius:22px;padding:28px 26px;
     box-shadow:0 30px 80px -30px rgba(15,23,34,.4);border:1px solid rgba(15,23,34,.06);text-align:center">
     <div style="font-size:11px;letter-spacing:.24em;color:var(--muted);text-transform:uppercase">Checkpoint reached</div>
     <h2 style="margin:6px 0 4px;font-size:24px;font-weight:500;color:#4a90c2">What was this climb for?</h2>
-    <p id="attrib-sub" style="margin:0 0 18px;color:var(--ink-soft);font-size:13px">A 30-minute ascent — let it count toward one of your trails.</p>
+    <p id="attrib-sub" style="margin:0 0 18px;color:var(--ink-soft);font-size:13px"></p>
     <div id="attrib-cats" style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:14px"></div>
     <div style="display:flex;gap:8px;justify-content:center;align-items:center;border-top:1px solid var(--line);padding-top:14px;margin-top:6px">
-      <input id="attrib-new" placeholder="or new trail…" style="flex:1;max-width:200px;padding:9px 12px;border-radius:10px;border:1px solid var(--line);background:#fafaf6;font-size:13px;outline:none;font-family:inherit"
-        onkeydown="if(event.key==='Enter')attribNew()"/>
-      <button onclick="attribNew()" style="padding:9px 14px;border-radius:10px;background:#4a90c2;color:#fff;font-size:13px">Add</button>
+      <input id="attrib-new" placeholder="or new trail…" style="flex:1;max-width:200px;padding:9px 12px;border-radius:10px;border:1px solid var(--line);background:#fafaf6;font-size:13px;outline:none;font-family:inherit" onkeydown="if(event.key==='Enter')attribNew()"/>
+      <button onclick="attribNew()" style="padding:9px 14px;border-radius:10px;background:#4a90c2;color:#fff;font-size:13px;font-family:inherit">Add</button>
     </div>
-    <button onclick="attribSkip()" style="margin-top:14px;font-size:12px;color:var(--muted);text-decoration:underline">Skip — don't allocate this one</button>
+    <button onclick="attribSkip()" style="margin-top:14px;font-size:12px;color:var(--muted);text-decoration:underline;font-family:inherit">Skip — don't allocate this one</button>
   </div>
 </div>
 
-<!-- ============ PREMIUM MODAL ============ -->
+<!-- PREMIUM MODAL -->
 <div id="premium-modal" style="position:fixed;inset:0;z-index:60;display:none;align-items:center;justify-content:center;
   background:rgba(15,23,34,.7);backdrop-filter:blur(8px)">
   <div style="width:min(420px,92vw);background:#fff;border-radius:24px;padding:36px 32px;text-align:center;
@@ -364,14 +392,12 @@
     </button>
     <button onclick="document.getElementById('premium-modal').style.display='none'"
       style="width:100%;padding:11px;border-radius:14px;background:rgba(15,23,34,.05);
-      color:#7b8aa1;font-size:14px;border:none;cursor:pointer;font-family:inherit">
-      Maybe later
-    </button>
+      color:#7b8aa1;font-size:14px;border:none;cursor:pointer;font-family:inherit">Maybe later</button>
     <p style="font-size:11px;color:#b0b8c4;margin:14px 0 0">Secure payment via Stripe · Cancel anytime</p>
   </div>
 </div>
 
-<!-- ============ SIDEBAR ============ -->
+<!-- SIDEBAR -->
 <aside>
   <div class="brand">
     <div class="brand-mark">▲</div>
@@ -389,14 +415,15 @@
   <div class="side-foot">
     <b id="who">Guest climber</b>
     <span id="who-sub" style="font-size:11px;display:block;margin-top:2px">No account linked</span>
+    <div id="streak-display"></div>
     <button onclick="signOut()">Sign out / switch</button>
   </div>
 </aside>
 
-<!-- ============ MAIN ============ -->
+<!-- MAIN -->
 <main>
 
-  <!-- ===== CLIMB VIEW ===== -->
+  <!-- CLIMB VIEW -->
   <section id="climb" class="view active">
     <div class="scene" id="scene">
       <div class="hud-top">
@@ -408,11 +435,10 @@
       </div>
       <div class="hud-timer">
         <div class="phase" id="phase">Ready</div>
-        <div class="time" id="time">25:00</div>
+        <div class="time" id="time">30:00</div>
         <div class="progress-pips" id="pips"></div>
       </div>
     </div>
-
     <div class="controls">
       <div class="ctl-block">
         <div class="label">Today's route</div>
@@ -442,21 +468,20 @@
     </div>
   </section>
 
-  <!-- ===== JOURNEY VIEW ===== -->
+  <!-- JOURNEY VIEW -->
   <section id="journey" class="view">
     <div class="j-head">
       <div class="eyebrow">Your week</div>
       <h1>Week's Journey</h1>
       <p id="j-sub">Every climb leaves a footprint on the range.</p>
     </div>
-
     <div class="stat-row">
       <div class="stat"><div class="v" id="s-climbs">0</div><div class="l">climbs this week</div></div>
       <div class="stat"><div class="v" id="s-hours">0.0h</div><div class="l">focus time</div></div>
       <div class="stat"><div class="v" id="s-streak">0</div><div class="l">day streak</div></div>
     </div>
-
-    <div class="j-grid">
+    <div class="pb-row" id="pb-row"></div>
+    <div class="j-grid" style="margin-top:22px">
       <div class="panel">
         <h3>This week's range</h3>
         <svg class="week-svg" id="week-svg" viewBox="0 0 700 160" preserveAspectRatio="none"></svg>
@@ -465,14 +490,14 @@
         <h3>Trail allocations</h3>
         <div id="cat-list"></div>
         <div class="add-cat">
-          <input id="new-cat" placeholder="Add a trail (e.g. guitar practice)" />
+          <input id="new-cat" placeholder="Add a trail (e.g. guitar practice)"/>
           <button onclick="addCategory()">Add</button>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ===== ROUTES VIEW ===== -->
+  <!-- ROUTES VIEW -->
   <section id="routes" class="view">
     <div class="j-head">
       <div class="eyebrow">Choose your distances</div>
@@ -482,7 +507,7 @@
     <div class="route-pref-grid" id="route-pref-grid"></div>
   </section>
 
-  <!-- ===== SETTINGS VIEW ===== -->
+  <!-- SETTINGS VIEW -->
   <section id="settings" class="view">
     <div class="j-head">
       <div class="eyebrow">Base Camp</div>
@@ -504,12 +529,21 @@
         </select>
       </div>
       <div class="setting-row">
-        <div><div class="name">Ambient sound</div><div class="hint">Plays softly during a climb</div></div>
+        <div><div class="name">Ambient sound</div><div class="hint">Plays during a climb</div></div>
         <select id="sound-sel" style="padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:#fff">
           <option value="silence">Silence</option>
           <option value="wind">Mountain wind</option>
           <option value="rain">Soft rain</option>
           <option value="forest">Forest</option>
+        </select>
+      </div>
+      <div class="setting-row">
+        <div><div class="name">Break length</div><div class="hint">Rest period after each climb</div></div>
+        <select id="break-sel" style="padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:#fff">
+          <option value="0">No break</option>
+          <option value="5" selected>5 minutes</option>
+          <option value="10">10 minutes</option>
+          <option value="15">15 minutes</option>
         </select>
       </div>
       <div class="setting-row">
@@ -522,24 +556,24 @@
 </main>
 
 <script>
-/* ================ SUPABASE SETUP ================ */
-// BUYER: Replace these two values with your own Supabase project credentials.
-// Find them at: supabase.com → your project → Settings → API
+/* ══ SUPABASE ══ */
 const SUPA_URL = 'https://yfduwenfpibzeorodpwu.supabase.co';
 const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlmZHV3ZW5mcGliemVvcm9kcHd1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAxMTU4NzEsImV4cCI6MjA5NTY5MTg3MX0.vR24F2bPCs63BihFochYS_1bqMuCbx4r2eSqgGzQJDE';
 const supa = supabase.createClient(SUPA_URL, SUPA_KEY);
 
-/* ================ STATE & STORAGE ================ */
-const LS = "trailhead.v3";
+/* ══ STATE ══ */
+const LS = 'trailhead.v4';
 const defaultState = () => ({
   user: null,
   premium: false,
   routes: { easy:2, standard:4, expedition:6 },
   selectedRoute: 'standard',
   sessionMin: 30,
+  breakMin: 5,
   theme: 'snowy',
   sound: 'wind',
   climbs: [],
+  lastCategory: null,
   categories: [
     {name:'school',  goal:10, color:'#3c6e71'},
     {name:'project', goal:6,  color:'#a05a2c'},
@@ -549,256 +583,270 @@ const defaultState = () => ({
   ],
   saveDismissed: false,
 });
-
 let state = load();
-
 function load(){
-  try{
-    const raw = localStorage.getItem(LS);
-    if(!raw) return defaultState();
-    return {...defaultState(), ...JSON.parse(raw)};
-  } catch { return defaultState(); }
+  try{ const r=localStorage.getItem(LS); if(!r) return defaultState(); return {...defaultState(),...JSON.parse(r)}; }
+  catch{ return defaultState(); }
 }
-
-function save(){
-  localStorage.setItem(LS, JSON.stringify(state));
-  syncToCloud();
-}
-
+function save(){ localStorage.setItem(LS,JSON.stringify(state)); syncToCloud(); }
 async function syncToCloud(){
-  const { data: { user } } = await supa.auth.getUser();
+  const {data:{user}}=await supa.auth.getUser();
   if(!user) return;
-  await supa.from('climbs').delete().eq('user_id', user.id);
-  if(state.climbs.length === 0) return;
-  const rows = state.climbs.map(c => ({...c, user_id: user.id}));
-  await supa.from('climbs').insert(rows);
+  await supa.from('climbs').delete().eq('user_id',user.id);
+  if(!state.climbs.length) return;
+  await supa.from('climbs').insert(state.climbs.map(c=>({...c,user_id:user.id})));
 }
-
 async function loadFromCloud(){
-  const { data: { user } } = await supa.auth.getUser();
+  const {data:{user}}=await supa.auth.getUser();
   if(!user) return;
-  const { data } = await supa.from('climbs').select('*').eq('user_id', user.id);
-  if(data && data.length > 0){
-    state.climbs = data.map(({ user_id, ...rest }) => rest);
-    renderJourney();
-    renderTimer();
-  }
+  const {data}=await supa.from('climbs').select('*').eq('user_id',user.id);
+  if(data&&data.length){ state.climbs=data.map(({user_id,...r})=>r); renderJourney(); renderTimer(); }
 }
 
-/* ================ TIMER ================ */
-let timer = { phase:'idle', remaining: state.sessionMin*60, duration: state.sessionMin*60, interval:null, category:'school' };
+/* ══ AUDIO ══ */
+let audioCtx=null, audioNodes=[];
+function stopAudio(){ audioNodes.forEach(n=>{try{n.stop()}catch(e){}}); audioNodes=[]; }
+function startAudio(){
+  stopAudio();
+  if(state.sound==='silence') return;
+  try{
+    if(!audioCtx) audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+    if(audioCtx.state==='suspended') audioCtx.resume();
+    const bufSize=audioCtx.sampleRate*4;
+    const buf=audioCtx.createBuffer(1,bufSize,audioCtx.sampleRate);
+    const data=buf.getChannelData(0);
+    for(let i=0;i<bufSize;i++) data[i]=Math.random()*2-1;
+    const src=audioCtx.createBufferSource();
+    src.buffer=buf; src.loop=true;
+    const gain=audioCtx.createGain();
+    const filt=audioCtx.createBiquadFilter();
+    if(state.sound==='wind'){ filt.type='bandpass'; filt.frequency.value=400; filt.Q.value=0.5; gain.gain.value=0.06; }
+    else if(state.sound==='rain'){ filt.type='highpass'; filt.frequency.value=1200; gain.gain.value=0.04; }
+    else if(state.sound==='forest'){ filt.type='bandpass'; filt.frequency.value=800; filt.Q.value=0.3; gain.gain.value=0.03; }
+    src.connect(filt); filt.connect(gain); gain.connect(audioCtx.destination);
+    src.start(); audioNodes.push(src);
+    if(state.sound==='wind'){
+      const o1=audioCtx.createOscillator(), g1=audioCtx.createGain();
+      o1.type='sine'; o1.frequency.value=80; g1.gain.value=0.012;
+      o1.connect(g1); g1.connect(audioCtx.destination); o1.start(); audioNodes.push(o1);
+    }
+  }catch(e){ console.log('Audio unavailable'); }
+}
 
-function fmt(s){ const m=Math.floor(s/60), x=s%60; return `${m}:${String(x).padStart(2,'0')}`; }
+/* ══ NOTIFICATIONS ══ */
+function requestNotifPermission(){ if('Notification' in window&&Notification.permission==='default') Notification.requestPermission(); }
+function sendNotif(title,body){ if('Notification' in window&&Notification.permission==='granted') new Notification(title,{body}); }
+
+/* ══ TIMER ══ */
+let timer={phase:'idle',remaining:state.sessionMin*60,duration:state.sessionMin*60,interval:null};
+let breakTimer={remaining:0,interval:null};
+function fmt(s){ const m=Math.floor(s/60),x=s%60; return `${m}:${String(x).padStart(2,'0')}`; }
 
 function setCustomLen(){
-  const v = parseInt(document.getElementById('custom-min').value);
-  if(!v || v<1 || v>240) return;
+  const v=parseInt(document.getElementById('custom-min').value);
+  if(!v||v<1||v>240) return;
   document.querySelectorAll('#len-pills .pill').forEach(p=>p.classList.remove('active'));
-  setLen(v);
-  document.getElementById('custom-min').value='';
+  setLen(v); document.getElementById('custom-min').value='';
 }
 function setLen(min){
-  state.sessionMin = min; save();
-  if(timer.phase==='idle' || timer.phase==='summit'){
-    timer.duration = min*60; timer.remaining = min*60;
-    renderTimer();
-  }
-  document.querySelectorAll('#len-pills .pill').forEach(p=>{
-    p.classList.toggle('active', Number(p.dataset.min)===min);
-  });
+  state.sessionMin=min; save();
+  if(timer.phase==='idle'||timer.phase==='summit'){ timer.duration=min*60; timer.remaining=min*60; renderTimer(); }
+  document.querySelectorAll('#len-pills .pill').forEach(p=>p.classList.toggle('active',Number(p.dataset.min)===min));
 }
-
 function startTimer(){
   if(timer.phase==='running'){ pauseTimer(); return; }
-  if(timer.phase==='summit'){ timer.remaining = timer.duration; timer.phase='idle'; }
+  if(timer.phase==='summit'){ timer.remaining=timer.duration; timer.phase='idle'; }
   timer.phase='running';
   document.getElementById('startBtn').textContent='Pause';
   document.getElementById('phase').textContent='Climbing';
-  renderMountains();
-  timer.interval = setInterval(()=>{
+  renderMountains(); startAudio(); requestNotifPermission();
+  timer.interval=setInterval(()=>{
     timer.remaining--;
-    if(timer.remaining<=0){
-      clearInterval(timer.interval);
-      timer.phase='summit';
-      onSummit();
-    }
+    if(timer.remaining<=0){ clearInterval(timer.interval); timer.phase='summit'; stopAudio(); onSummit(); }
     renderTimer();
   },1000);
 }
 function pauseTimer(){
-  clearInterval(timer.interval);
-  timer.phase='paused';
+  clearInterval(timer.interval); timer.phase='paused'; stopAudio();
   document.getElementById('startBtn').textContent='Resume climb';
   document.getElementById('phase').textContent='Resting at outcrop';
 }
 function resetTimer(){
-  clearInterval(timer.interval);
-  timer.phase='idle';
-  timer.duration = state.sessionMin*60;
-  timer.remaining = timer.duration;
+  clearInterval(timer.interval); stopAudio();
+  timer.phase='idle'; timer.duration=state.sessionMin*60; timer.remaining=timer.duration;
   document.getElementById('startBtn').textContent='Begin climb';
   document.getElementById('phase').textContent='Ready';
   renderTimer();
 }
 function onSummit(){
   document.getElementById('startBtn').textContent='Begin next climb';
-  document.getElementById('phase').textContent='Climb complete — checkpoint reached';
+  document.getElementById('phase').textContent='Summit reached — checkpoint!';
   renderTimer();
+  sendNotif('Summit reached! ⛰️','Your session is complete. Log your climb.');
   openAttribModal();
 }
 
-/* ---- post-climb category attribution ---- */
+/* ══ BREAK TIMER ══ */
+function startBreak(){
+  const mins=state.breakMin||0;
+  if(!mins) return;
+  breakTimer.remaining=mins*60;
+  document.getElementById('break-time').textContent=fmt(breakTimer.remaining);
+  document.getElementById('break-overlay').classList.add('show');
+  breakTimer.interval=setInterval(()=>{
+    breakTimer.remaining--;
+    document.getElementById('break-time').textContent=fmt(breakTimer.remaining);
+    if(breakTimer.remaining<=0){ clearInterval(breakTimer.interval); endBreak(); sendNotif('Break over!','Time for your next climb.'); }
+  },1000);
+}
+function endBreak(){
+  clearInterval(breakTimer.interval);
+  document.getElementById('break-overlay').classList.remove('show');
+  resetTimer();
+}
+
+/* ══ ATTRIBUTION ══ */
 function openAttribModal(){
-  const m = document.getElementById('attrib-modal');
-  document.getElementById('attrib-sub').textContent =
-    `A ${state.sessionMin}-minute ascent — let it count toward one of your trails.`;
-  const wrap = document.getElementById('attrib-cats');
-  const totals = {};
+  document.getElementById('attrib-sub').textContent=`A ${state.sessionMin}-minute ascent — let it count toward one of your trails.`;
+  const totals={};
   state.climbs.forEach(c=>{ totals[c.category]=(totals[c.category]||0)+1; });
-  const cats = [...state.categories].sort((a,b)=>(totals[b.name]||0)-(totals[a.name]||0));
-  wrap.innerHTML = cats.map(c=>`
-    <button onclick="attribPick('${c.name.replace(/'/g,"&#39;")}')"
+  const cats=[...state.categories].sort((a,b)=>{
+    if(a.name===state.lastCategory) return -1;
+    if(b.name===state.lastCategory) return 1;
+    return (totals[b.name]||0)-(totals[a.name]||0);
+  });
+  document.getElementById('attrib-cats').innerHTML=cats.map(c=>{
+    const isLast=c.name===state.lastCategory;
+    return `<button onclick="attribPick('${c.name.replace(/'/g,"&#39;")}')"
       style="display:inline-flex;align-items:center;gap:7px;padding:9px 14px;border-radius:99px;
-      background:rgba(15,23,34,.04);border:1px solid rgba(15,23,34,.08);font-size:13px;color:var(--ink);font-family:inherit;transition:.15s"
-      onmouseover="this.style.background='rgba(74,144,194,.12)';this.style.borderColor='rgba(74,144,194,.4)'"
-      onmouseout="this.style.background='rgba(15,23,34,.04)';this.style.borderColor='rgba(15,23,34,.08)'">
-      <span style="width:8px;height:8px;border-radius:99px;background:${c.color}"></span>${c.name}
-    </button>`).join('');
-  m.style.display='flex';
+      background:${isLast?'rgba(74,144,194,.14)':'rgba(15,23,34,.04)'};
+      border:1px solid ${isLast?'rgba(74,144,194,.45)':'rgba(15,23,34,.08)'};
+      font-size:13px;color:var(--ink);font-family:inherit;transition:.15s;
+      ${isLast?'box-shadow:0 0 0 3px rgba(74,144,194,.1)':''}">
+      <span style="width:8px;height:8px;border-radius:99px;background:${c.color}"></span>
+      ${c.name}${isLast?' ✓':''}
+    </button>`;
+  }).join('');
+  document.getElementById('attrib-modal').style.display='flex';
 }
 function logClimb(catName){
-  state.climbs.push({at:Date.now(), minutes: state.sessionMin, category: catName});
-  timer.category = catName;
-  save();
-  renderJourney();
-  renderTimer();
-  maybeOfferSave();
+  state.climbs.push({at:Date.now(),minutes:state.sessionMin,category:catName});
+  state.lastCategory=catName;
+  save(); renderJourney(); renderTimer(); maybeOfferSave();
 }
-function attribPick(name){
-  logClimb(name);
-  document.getElementById('attrib-modal').style.display='none';
-}
+function attribPick(name){ logClimb(name); document.getElementById('attrib-modal').style.display='none'; startBreak(); }
 function attribNew(){
-  const el = document.getElementById('attrib-new');
-  const name = el.value.trim().toLowerCase();
+  const el=document.getElementById('attrib-new'), name=el.value.trim().toLowerCase();
   if(!name) return;
   if(!state.categories.some(c=>c.name===name)){
     const palette=['#5b6e8f','#7a9b5a','#c9a24a','#a05a2c','#3c6e71','#8a5aa0','#c97a5a','#5aa0a0'];
-    state.categories.push({name, goal:2, color:palette[state.categories.length % palette.length]});
+    state.categories.push({name,goal:2,color:palette[state.categories.length%palette.length]});
   }
-  el.value='';
-  attribPick(name);
+  el.value=''; attribPick(name);
 }
-function attribSkip(){
-  document.getElementById('attrib-modal').style.display='none';
-}
+function attribSkip(){ document.getElementById('attrib-modal').style.display='none'; startBreak(); }
 function manualLog(catName){
-  const v = prompt(`Add hours to "${catName}" this week\n(e.g. 0.5 for 30 min, 1.25 for 1h 15m)`);
+  const v=prompt(`Add hours to "${catName}" this week\n(e.g. 0.5 = 30min, 1.25 = 1h15m)`);
   if(v===null) return;
-  const hrs = parseFloat(v);
-  if(!hrs || hrs<=0 || hrs>24) return;
-  state.climbs.push({at:Date.now(), minutes: Math.round(hrs*60), category: catName, manual:true});
+  const hrs=parseFloat(v);
+  if(!hrs||hrs<=0||hrs>24) return;
+  state.climbs.push({at:Date.now(),minutes:Math.round(hrs*60),category:catName,manual:true});
   save(); renderJourney();
 }
 
 function renderTimer(){
-  document.getElementById('time').textContent = fmt(timer.remaining);
-  renderPips();
-  renderClimber();
-  updateCameraPan();
+  document.getElementById('time').textContent=fmt(timer.remaining);
+  renderPips(); renderClimber(); updateCameraPan();
 }
 
-/* ================ ROUTE PIPS ================ */
+/* ══ PIPS ══ */
 function routeCount(){ return state.routes[state.selectedRoute]; }
-function climbsToday(){
-  const d=new Date(); d.setHours(0,0,0,0);
-  return state.climbs.filter(c=>c.at>=d.getTime()).length;
-}
+function climbsToday(){ const d=new Date(); d.setHours(0,0,0,0); return state.climbs.filter(c=>c.at>=d.getTime()).length; }
 function renderPips(){
-  const total = routeCount(), done = climbsToday();
-  const wrap = document.getElementById('pips');
+  const total=routeCount(), done=climbsToday();
   let h='';
   for(let i=0;i<total;i++){
-    const cls = i<done ? 'done' : (i===done && timer.phase==='running' ? 'current' : '');
-    h += `<span class="pip ${cls}"></span>`;
+    const cls=i<done?'done':(i===done&&timer.phase==='running'?'current':'');
+    h+=`<span class="pip ${cls}"></span>`;
   }
-  wrap.innerHTML=h;
+  document.getElementById('pips').innerHTML=h;
 }
 
-/* ================ SCENE ================ */
+/* ══ SCENE ══ */
 function buildScene(){
-  const scene = document.getElementById('scene');
-  const hudTop = scene.querySelector('.hud-top');
-  const hudTimer = scene.querySelector('.hud-timer');
+  const scene=document.getElementById('scene');
+  const hudTop=scene.querySelector('.hud-top'), hudTimer=scene.querySelector('.hud-timer');
   scene.innerHTML='';
-  const sky = document.createElement('div');
-  sky.className='pan-wrap'; sky.id='sky-layer';
-  sky.innerHTML = `<svg class="layer" id="sky-svg" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid slice"></svg>`;
+  const sky=document.createElement('div'); sky.className='pan-wrap'; sky.id='sky-layer';
+  sky.innerHTML=`<svg class="layer" id="sky-svg" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid slice"></svg>`;
   scene.appendChild(sky);
-  const mid = document.createElement('div');
-  mid.className='pan-wrap'; mid.id='mid-layer';
-  mid.style.pointerEvents='none';
+  const mid=document.createElement('div'); mid.className='pan-wrap'; mid.id='mid-layer'; mid.style.pointerEvents='none';
   scene.appendChild(mid);
-  const fg = document.createElement('div');
-  fg.className='pan-wrap'; fg.id='fg-layer';
-  fg.innerHTML = `<svg class="layer" id="fg-svg" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMax meet" style="width:100%;height:100%"></svg>`;
+  const fg=document.createElement('div'); fg.className='pan-wrap'; fg.id='fg-layer';
+  fg.innerHTML=`<svg class="layer" id="fg-svg" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMax meet" style="width:100%;height:100%"></svg>`;
   scene.appendChild(fg);
-  scene.appendChild(hudTop);
-  scene.appendChild(hudTimer);
-  renderSky();
-  renderMid();
-  renderMountains();
-  renderClimber();
-  applyWeather();
+  scene.appendChild(hudTop); scene.appendChild(hudTimer);
+  renderSky(); renderMid(); renderMountains(); renderClimber(); applyWeather();
 }
 
 function renderSky(){
-  const svg = document.getElementById('sky-svg');
-  const theme = state.theme;
-  const grads = {
-    snowy:    ['#a8c8e0','#dfe7d8','#cdb593'],
-    forest:   ['#9bb5c9','#c7d3b8','#7a6a52'],
-    desert:   ['#e8b88a','#d4a574','#a05a2c'],
-    night:    ['#0f1a2e','#1e2a44','#2a3852'],
-    pleasant: ['#b9dff0','#e8f1d6','#bcd7a8'],
-    sunny:    ['#7ec4e8','#ffd58a','#f6b15a'],
-    rainy:    ['#6a7886','#8a96a4','#a8b2bc'],
-    dawn:     ['#f7c6a0','#f29c8c','#9a6ea0'],
-  }[theme];
-  let h = `<defs><linearGradient id="skyg" x1="0" y1="0" x2="0" y2="1">
+  const svg=document.getElementById('sky-svg'), theme=state.theme;
+  const grads={
+    snowy:['#a8c8e0','#dfe7d8','#cdb593'],
+    forest:['#9bb5c9','#c7d3b8','#7a6a52'],
+    desert:['#e8b88a','#d4a574','#a05a2c'],
+    night:['#0f1a2e','#1e2a44','#2a3852'],
+    pleasant:['#b9dff0','#e8f1d6','#bcd7a8'],
+    sunny:['#7ec4e8','#ffd58a','#f6b15a'],
+    rainy:['#6a7886','#8a96a4','#a8b2bc'],
+    dawn:['#f7c6a0','#f29c8c','#9a6ea0'],
+  }[theme]||['#a8c8e0','#dfe7d8','#cdb593'];
+
+  // Time-of-day sun position
+  const hour=new Date().getHours();
+  const sunX=200+(hour/24)*600;
+
+  let h=`<defs><linearGradient id="skyg" x1="0" y1="0" x2="0" y2="1">
     <stop offset="0%" stop-color="${grads[0]}"/>
     <stop offset="60%" stop-color="${grads[1]}"/>
     <stop offset="100%" stop-color="${grads[2]}"/>
-  </linearGradient></defs>
-  <rect width="1000" height="600" fill="url(#skyg)"/>`;
+  </linearGradient></defs><rect width="1000" height="600" fill="url(#skyg)"/>`;
+
   if(theme==='night'){
-    h += `<circle cx="780" cy="120" r="38" fill="#f3e9c7" opacity=".95"/>`;
+    h+=`<circle cx="780" cy="120" r="38" fill="#f3e9c7" opacity=".95"/>`;
   } else if(theme==='rainy'){
     // overcast — no sun
   } else if(theme==='dawn'){
-    h += `<circle cx="760" cy="200" r="60" fill="#ffd9b8" opacity=".55"/>
-          <circle cx="760" cy="200" r="36" fill="#ffe8cc"/>`;
+    h+=`<circle cx="${sunX}" cy="280" r="55" fill="#ffd9b8" opacity=".6"/>
+        <circle cx="${sunX}" cy="280" r="34" fill="#ffe8cc"/>`;
   } else if(theme==='sunny'){
-    h += `<circle cx="780" cy="130" r="58" fill="#fff1b8" opacity=".75"/>
-          <circle cx="780" cy="130" r="34" fill="#fff8d8"/>`;
+    h+=`<circle cx="${sunX}" cy="120" r="58" fill="#fff1b8" opacity=".75"/>
+        <circle cx="${sunX}" cy="120" r="34" fill="#fff8d8"/>`;
   } else {
-    h += `<circle cx="780" cy="130" r="48" fill="#fff3d1" opacity=".7"/>
-          <circle cx="780" cy="130" r="28" fill="#fffae0"/>`;
+    h+=`<circle cx="${sunX}" cy="130" r="48" fill="#fff3d1" opacity=".7"/>
+        <circle cx="${sunX}" cy="130" r="28" fill="#fffae0"/>`;
   }
-  svg.innerHTML = h;
+  svg.innerHTML=h;
 }
 
 function renderMid(){
-  const mid = document.getElementById('mid-layer');
+  const mid=document.getElementById('mid-layer');
   mid.innerHTML='';
-  const weather = computeWeather();
-  const cloudCount = state.theme==='night'?1 : (weather.tier>=2?2:3);
+  const weather=computeWeather();
+  const s=streak();
+
+  // Fog if streak broken
+  if(s===0&&state.climbs.length>0){
+    const fog=document.createElement('div'); fog.className='fog';
+    mid.appendChild(fog);
+  }
+
+  const cloudCount=state.theme==='night'?1:(weather.tier>=2?2:3);
   for(let i=0;i<cloudCount;i++){
-    const c = document.createElement('div');
-    c.className='cloud';
-    const w = 80 + Math.random()*120;
+    const c=document.createElement('div'); c.className='cloud';
+    const w=80+Math.random()*120;
     c.style.cssText=`top:${10+i*18}%;width:${w}px;animation-duration:${60+i*30}s;animation-delay:${-i*15}s`;
-    c.innerHTML = `<svg viewBox="0 0 100 40" width="${w}" height="${w*0.4}">
+    c.innerHTML=`<svg viewBox="0 0 100 40" width="${w}" height="${w*0.4}">
       <ellipse cx="30" cy="25" rx="22" ry="12" fill="#fff" opacity=".85"/>
       <ellipse cx="55" cy="20" rx="26" ry="15" fill="#fff" opacity=".9"/>
       <ellipse cx="75" cy="26" rx="18" ry="11" fill="#fff" opacity=".8"/>
@@ -807,506 +855,370 @@ function renderMid(){
   }
   if(state.theme==='night'){
     for(let i=0;i<50;i++){
-      const s=document.createElement('span');
-      s.className='star';
-      s.style.cssText=`top:${Math.random()*60}%;left:${Math.random()*100}%;animation-delay:${Math.random()*3}s`;
-      mid.appendChild(s);
+      const st=document.createElement('span'); st.className='star';
+      st.style.cssText=`top:${Math.random()*60}%;left:${Math.random()*100}%;animation-delay:${Math.random()*3}s`;
+      mid.appendChild(st);
     }
   }
   if(state.theme==='rainy'){
     const rain=document.createElement('div');
     rain.style.cssText=`position:absolute;inset:0;pointer-events:none;overflow:hidden;opacity:.55`;
-    let svgRain = `<svg width="100%" height="100%" viewBox="0 0 1000 600" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">`;
+    let svgR=`<svg width="100%" height="100%" viewBox="0 0 1000 600" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">`;
     for(let i=0;i<60;i++){
-      const x=Math.random()*1000, y=Math.random()*600, len=8+Math.random()*10;
-      svgRain += `<line x1="${x}" y1="${y}" x2="${x-3}" y2="${y+len}" stroke="#e6edf2" stroke-width="1" opacity="${.3+Math.random()*.4}"/>`;
+      const x=Math.random()*1000,y=Math.random()*600,len=8+Math.random()*10;
+      svgR+=`<line x1="${x}" y1="${y}" x2="${x-3}" y2="${y+len}" stroke="#e6edf2" stroke-width="1" opacity="${.3+Math.random()*.4}"/>`;
     }
-    svgRain += `</svg>`;
-    rain.innerHTML = svgRain;
-    mid.appendChild(rain);
+    svgR+=`</svg>`; rain.innerHTML=svgR; mid.appendChild(rain);
   }
   if(state.theme==='dawn'){
     for(let i=0;i<20;i++){
-      const s=document.createElement('span');
-      s.className='star';
-      s.style.cssText=`top:${Math.random()*30}%;left:${Math.random()*100}%;opacity:.4;animation-delay:${Math.random()*3}s`;
-      mid.appendChild(s);
+      const st=document.createElement('span'); st.className='star';
+      st.style.cssText=`top:${Math.random()*30}%;left:${Math.random()*100}%;opacity:.4;animation-delay:${Math.random()*3}s`;
+      mid.appendChild(st);
     }
   }
-  if(weather.tier>=3 && state.theme!=='night'){
+  if(weather.tier>=3&&state.theme!=='night'){
     for(let i=0;i<2;i++){
-      const b=document.createElement('div');
-      b.className='bird';
+      const b=document.createElement('div'); b.className='bird';
       b.style.cssText=`top:${20+i*15}%;animation-duration:${80+i*20}s;animation-delay:${-i*40}s`;
       b.innerHTML=`<svg width="20" height="10" viewBox="0 0 20 10"><path d="M0 8 Q5 0 10 6 Q15 0 20 8" stroke="#33445a" stroke-width="1.4" fill="none" opacity=".7"/></svg>`;
       mid.appendChild(b);
     }
   }
-  if(weather.tier>=4 && state.theme==='night'){
+  if(weather.tier>=4&&state.theme==='night'){
     const aurora=document.createElement('div');
-    aurora.style.cssText=`position:absolute;top:0;left:0;right:0;height:60%;
-      background:linear-gradient(180deg,rgba(120,220,170,.25),transparent 70%);
-      filter:blur(20px);pointer-events:none`;
+    aurora.style.cssText=`position:absolute;top:0;left:0;right:0;height:60%;background:linear-gradient(180deg,rgba(120,220,170,.25),transparent 70%);filter:blur(20px);pointer-events:none`;
     mid.appendChild(aurora);
   }
 }
 
 function renderMountains(){
-  const svg = document.getElementById('fg-svg');
-  const count = routeCount();
-  const W=1000, H=600;
-  const palettes = {
-    snowy: {
-      face1:'#3d5568', face2:'#52718a', snow1:'#c8e2f2', snow2:'#e2f4fc', snowhigh:'#f0f8ff',
-      tree1:'#2a4a38', tree2:'#365a44', ground1:'#4a7248', ground2:'#325a34',
-      rock:'rgba(255,255,255,0.06)', flagcol:'#c9a24a'
-    },
-    forest: {
-      face1:'#2e4828', face2:'#3e6038', snow1:'#a8c8a0', snow2:'#c0d8b8', snowhigh:'#daecd4',
-      tree1:'#1e3820', tree2:'#2a4c2c', ground1:'#3a6230', ground2:'#284820',
-      rock:'rgba(255,255,255,0.05)', flagcol:'#c9a24a'
-    },
-    desert: {
-      face1:'#7a3c1c', face2:'#a0582a', snow1:'#e8c090', snow2:'#f0d0a8', snowhigh:'#f8e8c8',
-      tree1:'#5a3818', tree2:'#7a4c24', ground1:'#a06830', ground2:'#7a4c1c',
-      rock:'rgba(255,255,255,0.05)', flagcol:'#e8b85a'
-    },
-    night: {
-      face1:'#182030', face2:'#253048', snow1:'#8090b0', snow2:'#a0b0cc', snowhigh:'#c8d4e8',
-      tree1:'#10182a', tree2:'#1a2438', ground1:'#20304a', ground2:'#141e30',
-      rock:'rgba(255,255,255,0.04)', flagcol:'#c9a24a'
-    }
-    ,
-    pleasant: {
-      face1:'#5a7a5e', face2:'#7a9a78', snow1:'#d8e8c8', snow2:'#e8f2d8', snowhigh:'#f4f8e4',
-      tree1:'#2e5230', tree2:'#3e6840', ground1:'#6ea85a', ground2:'#4a7838',
-      rock:'rgba(255,255,255,0.06)', flagcol:'#e8a854'
-    },
-    sunny: {
-      face1:'#9a6a3a', face2:'#c08a4a', snow1:'#ffe0a8', snow2:'#fff0c8', snowhigh:'#fff8e0',
-      tree1:'#5a6e2a', tree2:'#7a8a3a', ground1:'#c8a85a', ground2:'#9a7a3a',
-      rock:'rgba(255,240,200,0.08)', flagcol:'#e85a3a'
-    },
-    rainy: {
-      face1:'#3a4654', face2:'#52606e', snow1:'#b8c4cc', snow2:'#cdd6dc', snowhigh:'#e0e6ea',
-      tree1:'#243038', tree2:'#34424c', ground1:'#4a5e4e', ground2:'#324638',
-      rock:'rgba(255,255,255,0.04)', flagcol:'#c9a24a'
-    },
-    dawn: {
-      face1:'#4a3854', face2:'#6a4e6e', snow1:'#f4c8c0', snow2:'#fad8c8', snowhigh:'#ffe8d4',
-      tree1:'#3a2840', tree2:'#503a58', ground1:'#9a6a78', ground2:'#6e4858',
-      rock:'rgba(255,220,200,0.06)', flagcol:'#ffd078'
-    }
-  }[state.theme] || {};
+  const svg=document.getElementById('fg-svg');
+  const count=routeCount(), W=1000, H=600;
+  const palettes={
+    snowy:{face1:'#3d5568',face2:'#52718a',snow1:'#c8e2f2',snow2:'#e2f4fc',snowhigh:'#f0f8ff',tree1:'#2a4a38',tree2:'#365a44',ground1:'#4a7248',ground2:'#325a34',rock:'rgba(255,255,255,0.06)',flagcol:'#c9a24a'},
+    forest:{face1:'#2e4828',face2:'#3e6038',snow1:'#a8c8a0',snow2:'#c0d8b8',snowhigh:'#daecd4',tree1:'#1e3820',tree2:'#2a4c2c',ground1:'#3a6230',ground2:'#284820',rock:'rgba(255,255,255,0.05)',flagcol:'#c9a24a'},
+    desert:{face1:'#7a3c1c',face2:'#a0582a',snow1:'#e8c090',snow2:'#f0d0a8',snowhigh:'#f8e8c8',tree1:'#5a3818',tree2:'#7a4c24',ground1:'#a06830',ground2:'#7a4c1c',rock:'rgba(255,255,255,0.05)',flagcol:'#e8b85a'},
+    night:{face1:'#182030',face2:'#253048',snow1:'#8090b0',snow2:'#a0b0cc',snowhigh:'#c8d4e8',tree1:'#10182a',tree2:'#1a2438',ground1:'#20304a',ground2:'#141e30',rock:'rgba(255,255,255,0.04)',flagcol:'#c9a24a'},
+    pleasant:{face1:'#5a7a5e',face2:'#7a9a78',snow1:'#d8e8c8',snow2:'#e8f2d8',snowhigh:'#f4f8e4',tree1:'#2e5230',tree2:'#3e6840',ground1:'#6ea85a',ground2:'#4a7838',rock:'rgba(255,255,255,0.06)',flagcol:'#e8a854'},
+    sunny:{face1:'#9a6a3a',face2:'#c08a4a',snow1:'#ffe0a8',snow2:'#fff0c8',snowhigh:'#fff8e0',tree1:'#5a6e2a',tree2:'#7a8a3a',ground1:'#c8a85a',ground2:'#9a7a3a',rock:'rgba(255,240,200,0.08)',flagcol:'#e85a3a'},
+    rainy:{face1:'#3a4654',face2:'#52606e',snow1:'#b8c4cc',snow2:'#cdd6dc',snowhigh:'#e0e6ea',tree1:'#243038',tree2:'#34424c',ground1:'#4a5e4e',ground2:'#324638',rock:'rgba(255,255,255,0.04)',flagcol:'#c9a24a'},
+    dawn:{face1:'#4a3854',face2:'#6a4e6e',snow1:'#f4c8c0',snow2:'#fad8c8',snowhigh:'#ffe8d4',tree1:'#3a2840',tree2:'#503a58',ground1:'#9a6a78',ground2:'#6e4858',rock:'rgba(255,220,200,0.06)',flagcol:'#ffd078'},
+  }[state.theme]||{};
 
-  const active = climbsToday();
-  const mw = 360;
-  const totalW = count * mw + 300;
-  svg.setAttribute('viewBox', `0 0 ${totalW} ${H}`);
-  svg.setAttribute('preserveAspectRatio','xMidYMax meet');
-  let h='';
-  h += buildFarRidge(totalW, H, palettes);
+  const active=climbsToday(), mw=360, totalW=count*mw+300;
+  let h=buildFarRidge(totalW,H,palettes);
   for(let i=0;i<count;i++){
-    const cx = 150 + i*mw + mw/2;
-    const baseY = H - 45;
-    const peakVar = [0, 18, -10, 25, -5][i % 5];
-    const peakY = 110 + peakVar;
-    const halfW = 132 + (i % 3)*8;
-    h += buildMountain(cx, peakY, baseY, halfW, palettes, i < active, i === active, i);
+    const cx=150+i*mw+mw/2, baseY=H-45;
+    const peakVar=[0,18,-10,25,-5][i%5], peakY=110+peakVar, halfW=132+(i%3)*8;
+    h+=buildMountain(cx,peakY,baseY,halfW,palettes,i<active,i===active,i);
   }
-  h += `<path d="M0,${H-45} Q${totalW*0.25},${H-55} ${totalW*0.5},${H-42} Q${totalW*0.75},${H-52} ${totalW},${H-45} L${totalW},${H} L0,${H} Z" fill="${palettes.ground1}"/>`;
-  h += `<path d="M0,${H-30} Q${totalW*0.33},${H-20} ${totalW*0.5},${H-32} Q${totalW*0.66},${H-18} ${totalW},${H-28} L${totalW},${H} L0,${H} Z" fill="${palettes.ground2}"/>`;
-  svg.innerHTML = h;
-  const activeCx = 150 + active*mw + mw/2;
-  const panX = Math.max(0, activeCx - W/2);
-  svg.setAttribute('viewBox', `${panX} 0 ${W} ${H}`);
+  h+=`<path d="M0,${H-45} Q${totalW*.25},${H-55} ${totalW*.5},${H-42} Q${totalW*.75},${H-52} ${totalW},${H-45} L${totalW},${H} L0,${H} Z" fill="${palettes.ground1}"/>`;
+  h+=`<path d="M0,${H-30} Q${totalW*.33},${H-20} ${totalW*.5},${H-32} Q${totalW*.66},${H-18} ${totalW},${H-28} L${totalW},${H} L0,${H} Z" fill="${palettes.ground2}"/>`;
+  svg.innerHTML=h;
+  const activeCx=150+active*mw+mw/2, panX=Math.max(0,activeCx-W/2);
+  svg.setAttribute('viewBox',`${panX} 0 ${W} ${H}`);
   svg.setAttribute('preserveAspectRatio','xMidYMax meet');
-  const aIdx = Math.min(active, count-1);
-  const aPeakVar = [0, 18, -10, 25, -5][aIdx % 5];
-  svg.dataset.activeCx = activeCx;
-  svg.dataset.peakY = 110 + aPeakVar;
-  svg.dataset.baseY = H-45;
-  svg.dataset.halfW = 132 + (aIdx % 3)*8;
-  svg.dataset.panX = panX;
+  const aIdx=Math.min(active,count-1), aPeakVar=[0,18,-10,25,-5][aIdx%5];
+  svg.dataset.activeCx=activeCx; svg.dataset.peakY=110+aPeakVar;
+  svg.dataset.baseY=H-45; svg.dataset.halfW=132+(aIdx%3)*8; svg.dataset.panX=panX;
 }
 
-function buildFarRidge(W, H, p){
-  const gy = H - 45;
-  let pts = `0,${gy}`;
-  const steps = 18;
-  for(let i=0;i<=steps;i++){
-    const x = (i/steps)*W;
-    const y = gy - 55 - Math.sin(i*0.8)*40 - Math.cos(i*1.3)*25;
-    pts += ` ${x.toFixed(1)},${y.toFixed(1)}`;
+function buildFarRidge(W,H,p){
+  const gy=H-45; let pts=`0,${gy}`;
+  for(let i=0;i<=18;i++){
+    const x=(i/18)*W, y=gy-55-Math.sin(i*.8)*40-Math.cos(i*1.3)*25;
+    pts+=` ${x.toFixed(1)},${y.toFixed(1)}`;
   }
-  pts += ` ${W},${gy}`;
+  pts+=` ${W},${gy}`;
   return `<polygon points="${pts}" fill="${p.face2}" opacity="0.3"/>`;
 }
 
-function buildMountain(cx, peakY, baseY, halfW, p, done, active, idx){
-  let h='';
-  const lx = cx - halfW, rx = cx + halfW;
-  h += `<polygon points="${cx},${peakY} ${lx},${baseY} ${cx},${baseY}" fill="${p.face1}"/>`;
-  h += `<polygon points="${cx},${peakY} ${lx},${baseY} ${lx+halfW*0.28},${baseY}" fill="rgba(0,0,0,0.11)"/>`;
-  h += `<polygon points="${cx},${peakY} ${cx},${baseY} ${rx},${baseY}" fill="${p.face2}"/>`;
+function buildMountain(cx,peakY,baseY,halfW,p,done,active,idx){
+  let h=''; const lx=cx-halfW, rx=cx+halfW;
+  h+=`<polygon points="${cx},${peakY} ${lx},${baseY} ${cx},${baseY}" fill="${p.face1}"/>`;
+  h+=`<polygon points="${cx},${peakY} ${lx},${baseY} ${lx+halfW*.28},${baseY}" fill="rgba(0,0,0,0.11)"/>`;
+  h+=`<polygon points="${cx},${peakY} ${cx},${baseY} ${rx},${baseY}" fill="${p.face2}"/>`;
   for(let r=0;r<3;r++){
-    const ly1 = lx + halfW*(0.15+r*0.08), ly2 = baseY - (baseY-peakY)*(0.28+r*0.18);
-    const lx2 = cx - halfW*(0.12+r*0.06), lx2y = peakY + (baseY-peakY)*(0.22+r*0.16);
-    h += `<line x1="${ly1.toFixed(1)}" y1="${ly2.toFixed(1)}" x2="${lx2.toFixed(1)}" y2="${lx2y.toFixed(1)}" stroke="${p.rock}" stroke-width="1.6"/>`;
-    const ry1 = rx - halfW*(0.15+r*0.08), ry2 = baseY - (baseY-peakY)*(0.28+r*0.18);
-    const rx2 = cx + halfW*(0.12+r*0.06), rx2y = peakY + (baseY-peakY)*(0.22+r*0.16);
-    h += `<line x1="${ry1.toFixed(1)}" y1="${ry2.toFixed(1)}" x2="${rx2.toFixed(1)}" y2="${rx2y.toFixed(1)}" stroke="${p.rock}" stroke-width="1.4"/>`;
+    const ly1=lx+halfW*(.15+r*.08), ly2=baseY-(baseY-peakY)*(.28+r*.18);
+    const lx2=cx-halfW*(.12+r*.06), lx2y=peakY+(baseY-peakY)*(.22+r*.16);
+    h+=`<line x1="${ly1.toFixed(1)}" y1="${ly2.toFixed(1)}" x2="${lx2.toFixed(1)}" y2="${lx2y.toFixed(1)}" stroke="${p.rock}" stroke-width="1.6"/>`;
+    const ry1=rx-halfW*(.15+r*.08), ry2=baseY-(baseY-peakY)*(.28+r*.18);
+    const rx2=cx+halfW*(.12+r*.06), rx2y=peakY+(baseY-peakY)*(.22+r*.16);
+    h+=`<line x1="${ry1.toFixed(1)}" y1="${ry2.toFixed(1)}" x2="${rx2.toFixed(1)}" y2="${rx2y.toFixed(1)}" stroke="${p.rock}" stroke-width="1.4"/>`;
   }
-  const sw = halfW * 0.48;
-  h += `<polygon points="${cx-sw},${peakY+sw*0.85} ${cx},${peakY} ${cx+sw},${peakY+sw*0.9} ${cx+sw*0.5},${peakY+sw*1.2} ${cx-sw*0.3},${peakY+sw*1.15}" fill="${p.snow1}" opacity="0.95"/>`;
-  h += `<polygon points="${cx-sw*0.65},${peakY+sw*0.5} ${cx},${peakY} ${cx+sw*0.65},${peakY+sw*0.52} ${cx+sw*0.28},${peakY+sw*0.75} ${cx-sw*0.1},${peakY+sw*0.55}" fill="${p.snow2}"/>`;
-  h += `<polygon points="${cx-sw*0.3},${peakY+sw*0.22} ${cx},${peakY} ${cx+sw*0.28},${peakY+sw*0.24}" fill="${p.snowhigh}"/>`;
-  h += `<path ${active?'id="active-trail" ':''}d="M${cx},${baseY-6} C${cx-halfW*0.18},${baseY-80} ${cx-halfW*0.38},${baseY-160} ${cx-halfW*0.25},${peakY+sw*0.9}" fill="none" stroke="rgba(201,162,74,0.38)" stroke-width="1.8" stroke-dasharray="5,6"/>`;
-  if(active){
-    h += `<path d="M${cx-halfW*0.25},${peakY+sw*0.9} L${cx},${peakY+sw*0.2}" fill="none" stroke="rgba(201,162,74,0.32)" stroke-width="1.6" stroke-dasharray="3,5"/>`;
-  }
-  const treePositions = [-halfW+12, -halfW+32, -halfW+18, halfW-16, halfW-36, halfW-22];
-  const treeSizes = [28,34,24,30,36,26];
-  treePositions.forEach((tx,ti) => {
-    const tx2 = cx+tx, th = treeSizes[ti];
-    h += `<polygon points="${tx2},${baseY} ${tx2+5},${baseY-th} ${tx2+10},${baseY}" fill="${ti%2===0?p.tree1:p.tree2}"/>`;
+  const sw=halfW*.48;
+  h+=`<polygon points="${cx-sw},${peakY+sw*.85} ${cx},${peakY} ${cx+sw},${peakY+sw*.9} ${cx+sw*.5},${peakY+sw*1.2} ${cx-sw*.3},${peakY+sw*1.15}" fill="${p.snow1}" opacity="0.95"/>`;
+  h+=`<polygon points="${cx-sw*.65},${peakY+sw*.5} ${cx},${peakY} ${cx+sw*.65},${peakY+sw*.52} ${cx+sw*.28},${peakY+sw*.75} ${cx-sw*.1},${peakY+sw*.55}" fill="${p.snow2}"/>`;
+  h+=`<polygon points="${cx-sw*.3},${peakY+sw*.22} ${cx},${peakY} ${cx+sw*.28},${peakY+sw*.24}" fill="${p.snowhigh}"/>`;
+  h+=`<path ${active?'id="active-trail" ':''}d="M${cx},${baseY-6} C${cx-halfW*.18},${baseY-80} ${cx-halfW*.38},${baseY-160} ${cx-halfW*.25},${peakY+sw*.9}" fill="none" stroke="rgba(201,162,74,0.38)" stroke-width="1.8" stroke-dasharray="5,6"/>`;
+  if(active) h+=`<path d="M${cx-halfW*.25},${peakY+sw*.9} L${cx},${peakY+sw*.2}" fill="none" stroke="rgba(201,162,74,0.32)" stroke-width="1.6" stroke-dasharray="3,5"/>`;
+  const treePositions=[-halfW+12,-halfW+32,-halfW+18,halfW-16,halfW-36,halfW-22];
+  const treeSizes=[28,34,24,30,36,26];
+  treePositions.forEach((tx,ti)=>{
+    const tx2=cx+tx, th=treeSizes[ti];
+    h+=`<polygon points="${tx2},${baseY} ${tx2+5},${baseY-th} ${tx2+10},${baseY}" fill="${ti%2===0?p.tree1:p.tree2}"/>`;
   });
   if(done){
-    h += `<line x1="${cx}" y1="${peakY-2}" x2="${cx}" y2="${peakY-24}" stroke="#33445a" stroke-width="1.6"/>`;
-    h += `<polygon points="${cx},${peakY-24} ${cx+18},${peakY-18} ${cx},${peakY-12}" fill="${p.flagcol}"/>`;
+    h+=`<line x1="${cx}" y1="${peakY-2}" x2="${cx}" y2="${peakY-24}" stroke="#33445a" stroke-width="1.6"/>`;
+    h+=`<polygon points="${cx},${peakY-24} ${cx+18},${peakY-18} ${cx},${peakY-12}" fill="${p.flagcol}"/>`;
   }
-  h += `<text x="${cx}" y="${baseY+18}" text-anchor="middle" font-size="10" fill="rgba(15,23,34,0.38)" font-family="ui-serif,serif">Camp ${idx+1}</text>`;
+  h+=`<text x="${cx}" y="${baseY+18}" text-anchor="middle" font-size="10" fill="rgba(15,23,34,0.38)" font-family="ui-serif,serif">Camp ${idx+1}</text>`;
   return h;
 }
 
-let stepsLayer=null;
 function renderClimber(){
-  const svg = document.getElementById('fg-svg');
-  if(!svg || !svg.dataset.activeCx) return;
-  svg.querySelectorAll('.climber, .step').forEach(n=>n.remove());
-  const cx = +svg.dataset.activeCx;
-  const peakY = +svg.dataset.peakY;
-  const baseY = +svg.dataset.baseY;
-  const halfW = +svg.dataset.halfW;
-  let t = 0;
-  if(timer.phase==='running' || timer.phase==='paused') t = 1 - timer.remaining/timer.duration;
-  else if(timer.phase==='summit') t = 1;
-  else t = 0;
-  const path = svg.querySelector('#active-trail');
-  const celebrate = timer.phase==='summit';
-  let px, py;
-  if(celebrate){
-    px = cx; py = peakY - 6;
-  } else if(path){
-    const len = path.getTotalLength();
-    const pt = path.getPointAtLength(Math.max(0.001, Math.min(0.999, t)) * len);
-    px = pt.x;
-    py = pt.y - 6;
-  } else {
-    px = cx; py = baseY - 6;
-  }
-  const ns = 'http://www.w3.org/2000/svg';
-  const g = document.createElementNS(ns,'g');
+  const svg=document.getElementById('fg-svg');
+  if(!svg||!svg.dataset.activeCx) return;
+  svg.querySelectorAll('.climber,.step').forEach(n=>n.remove());
+  const cx=+svg.dataset.activeCx, peakY=+svg.dataset.peakY, baseY=+svg.dataset.baseY, halfW=+svg.dataset.halfW;
+  let t=0;
+  if(timer.phase==='running'||timer.phase==='paused') t=1-timer.remaining/timer.duration;
+  else if(timer.phase==='summit') t=1;
+  const path=svg.querySelector('#active-trail'), celebrate=timer.phase==='summit';
+  let px,py;
+  if(celebrate){ px=cx; py=peakY-6; }
+  else if(path){ const len=path.getTotalLength(), pt=path.getPointAtLength(Math.max(.001,Math.min(.999,t))*len); px=pt.x; py=pt.y-6; }
+  else{ px=cx; py=baseY-6; }
+  const ns='http://www.w3.org/2000/svg';
+  const g=document.createElementNS(ns,'g');
   g.setAttribute('class','climber'+(celebrate?' celebrate':''));
-  const scale = celebrate ? 1.8 : 1;
+  const scale=celebrate?1.8:1;
   g.setAttribute('transform',`translate(${px},${py}) scale(${scale})`);
-  g.innerHTML = `
+  g.innerHTML=`
     <ellipse cx="0" cy="0" rx="9" ry="4" fill="#0f1722" opacity=".22"/>
     <rect x="-5" y="-22" width="10" height="13" rx="3" fill="#a05a2c"/>
     <rect x="-3" y="-19" width="6" height="5" rx="1" fill="#7a4220"/>
     <circle cx="0" cy="-26" r="5" fill="#f1c79a"/>
     <rect x="-4" y="-18" width="8" height="11" rx="2" fill="#3c6e71"/>
     ${celebrate
-      ? `<line x1="-4" y1="-12" x2="-10" y2="-28" stroke="#3c6e71" stroke-width="2.3" stroke-linecap="round"/>
-         <line x1="4"  y1="-12" x2="10"  y2="-28" stroke="#3c6e71" stroke-width="2.3" stroke-linecap="round"/>
-         <line x1="10" y1="-28" x2="10" y2="-46" stroke="#33445a" stroke-width="1.6" stroke-linecap="round"/>
-         <polygon points="10,-46 24,-41 10,-36" fill="#c9a24a"/>
-         <polygon points="10,-46 18,-43 10,-41" fill="#e8c060" opacity=".6"/>`
-      : `<line x1="-4" y1="-12" x2="-7" y2="-6"  stroke="#3c6e71" stroke-width="2.3" stroke-linecap="round"/>
-         <line x1="4"  y1="-12" x2="7"  y2="-6"  stroke="#3c6e71" stroke-width="2.3" stroke-linecap="round"/>`}
+      ?`<line x1="-4" y1="-12" x2="-10" y2="-28" stroke="#3c6e71" stroke-width="2.3" stroke-linecap="round"/>
+        <line x1="4" y1="-12" x2="10" y2="-28" stroke="#3c6e71" stroke-width="2.3" stroke-linecap="round"/>
+        <line x1="10" y1="-28" x2="10" y2="-46" stroke="#33445a" stroke-width="1.6" stroke-linecap="round"/>
+        <polygon points="10,-46 24,-41 10,-36" fill="#c9a24a"/>
+        <polygon points="10,-46 18,-43 10,-41" fill="#e8c060" opacity=".6"/>`
+      :`<line x1="-4" y1="-12" x2="-7" y2="-6" stroke="#3c6e71" stroke-width="2.3" stroke-linecap="round"/>
+        <line x1="4" y1="-12" x2="7" y2="-6" stroke="#3c6e71" stroke-width="2.3" stroke-linecap="round"/>`}
     <line x1="-2" y1="-7" x2="-3" y2="-1" stroke="#1f3a3c" stroke-width="2.3" stroke-linecap="round"/>
-    <line x1="2"  y1="-7" x2="3"  y2="-1" stroke="#1f3a3c" stroke-width="2.3" stroke-linecap="round"/>
+    <line x1="2" y1="-7" x2="3" y2="-1" stroke="#1f3a3c" stroke-width="2.3" stroke-linecap="round"/>
   `;
   svg.appendChild(g);
   if(timer.phase==='running'){
-    const stepEl = document.createElementNS(ns,'circle');
-    stepEl.setAttribute('class','step');
-    stepEl.setAttribute('cx', px-6); stepEl.setAttribute('cy', py+3);
-    stepEl.setAttribute('r', 1.4); stepEl.setAttribute('fill', '#0f1722');
-    stepEl.setAttribute('opacity', '.35');
+    const stepEl=document.createElementNS(ns,'circle');
+    stepEl.setAttribute('class','step'); stepEl.setAttribute('cx',px-6); stepEl.setAttribute('cy',py+3);
+    stepEl.setAttribute('r',1.4); stepEl.setAttribute('fill','#0f1722'); stepEl.setAttribute('opacity','.35');
     stepEl.style.animation='fadestep 4s linear forwards';
-    svg.appendChild(stepEl);
-    setTimeout(()=>stepEl.remove(), 4000);
+    svg.appendChild(stepEl); setTimeout(()=>stepEl.remove(),4000);
   }
 }
 
 function updateCameraPan(){
-  const fgL=document.getElementById('fg-layer');
-  const mdL=document.getElementById('mid-layer');
-  const skL=document.getElementById('sky-layer');
+  const fgL=document.getElementById('fg-layer'), mdL=document.getElementById('mid-layer'), skL=document.getElementById('sky-layer');
   if(!fgL||!mdL||!skL) return;
-  if(timer.phase!=='running' && timer.phase!=='paused' && timer.phase!=='summit'){
-    fgL.style.transform='translateY(0)';
-    mdL.style.transform='translateY(0)';
-    skL.style.transform='translateY(0)';
-    return;
+  if(timer.phase!=='running'&&timer.phase!=='paused'&&timer.phase!=='summit'){
+    fgL.style.transform='translateY(0)'; mdL.style.transform='translateY(0)'; skL.style.transform='translateY(0)'; return;
   }
-  const t = timer.phase==='summit' ? 1 : 1 - timer.remaining/timer.duration;
+  const t=timer.phase==='summit'?1:1-timer.remaining/timer.duration;
   fgL.style.transform=`translateY(${-t*10}px)`;
   mdL.style.transform=`translateY(${-t*6}px)`;
   skL.style.transform=`translateY(${-t*2}px)`;
 }
 
-/* ================ WEATHER ================ */
+/* ══ WEATHER ══ */
 function computeWeather(){
-  const wk = climbsThisWeek().length;
-  let tier = 0;
-  if(wk>=1) tier=1;
-  if(wk>=4) tier=2;
-  if(wk>=8) tier=3;
-  if(wk>=14) tier=4;
-  const labels = [
-    'morning fog drifts in',
-    'soft mountain air',
-    'clear skies open up',
-    'birdsong on the breeze',
-    'rare summit glow',
-  ];
-  return {tier, label:labels[tier]};
+  const wk=climbsThisWeek().length;
+  let tier=0;
+  if(wk>=1) tier=1; if(wk>=4) tier=2; if(wk>=8) tier=3; if(wk>=14) tier=4;
+  return {tier,label:['morning fog drifts in','soft mountain air','clear skies open up','birdsong on the breeze','rare summit glow'][tier]};
 }
-function applyWeather(){
-  const w = computeWeather();
-  document.getElementById('weather').textContent = w.label;
-}
+function applyWeather(){ document.getElementById('weather').textContent=computeWeather().label; }
 
-/* ================ HELPERS ================ */
-function climbsThisWeek(){
-  const d=new Date(); d.setDate(d.getDate()-6); d.setHours(0,0,0,0);
-  return state.climbs.filter(c=>c.at>=d.getTime());
-}
+/* ══ HELPERS ══ */
+function climbsThisWeek(){ const d=new Date(); d.setDate(d.getDate()-6); d.setHours(0,0,0,0); return state.climbs.filter(c=>c.at>=d.getTime()); }
 function streak(){
   if(!state.climbs.length) return 0;
-  const days = new Set(state.climbs.map(c=>{const d=new Date(c.at);return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;}));
+  const days=new Set(state.climbs.map(c=>{ const d=new Date(c.at); return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`; }));
   let s=0; const d=new Date();
-  while(true){
-    const k=`${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
-    if(days.has(k)){ s++; d.setDate(d.getDate()-1); } else break;
-  }
+  while(true){ const k=`${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`; if(days.has(k)){s++;d.setDate(d.getDate()-1);}else break; }
   return s;
+}
+function personalBest(){
+  if(!state.climbs.length) return {bestStreak:0,bestWeek:0};
+  const days=[...new Set(state.climbs.map(c=>{ const d=new Date(c.at); return `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`; }))].sort();
+  let best=1,cur=1;
+  for(let i=1;i<days.length;i++){
+    const diff=(new Date(days[i])-new Date(days[i-1]))/(86400000);
+    if(diff===1){cur++;best=Math.max(best,cur);}else cur=1;
+  }
+  const weekTotals={};
+  state.climbs.forEach(c=>{ const d=new Date(c.at); const k=`${d.getFullYear()}-W${Math.floor(d.getDate()/7)}`; weekTotals[k]=(weekTotals[k]||0)+1; });
+  return {bestStreak:best,bestWeek:Math.max(0,...Object.values(weekTotals))};
 }
 function timeOfDayLabel(){
   const h=new Date().getHours();
-  if(h<6) return '— Pre-dawn —';
-  if(h<11) return '— Morning ascent —';
-  if(h<15) return '— Midday trail —';
-  if(h<19) return '— Evening light —';
+  if(h<6) return '— Pre-dawn —'; if(h<11) return '— Morning ascent —';
+  if(h<15) return '— Midday trail —'; if(h<19) return '— Evening light —';
   return '— Night climb —';
 }
 
-/* ================ JOURNEY VIEW ================ */
+/* ══ JOURNEY ══ */
 function renderJourney(){
-  const wk = climbsThisWeek();
-  const hours = wk.reduce((a,c)=>a+c.minutes,0)/60;
-  document.getElementById('s-climbs').textContent = wk.length;
-  document.getElementById('s-hours').textContent = hours.toFixed(1)+'h';
-  document.getElementById('s-streak').textContent = streak();
-  const days=[];
-  const today=new Date(); today.setHours(0,0,0,0);
+  const wk=climbsThisWeek(), hours=wk.reduce((a,c)=>a+c.minutes,0)/60, s=streak();
+  document.getElementById('s-climbs').textContent=wk.length;
+  document.getElementById('s-hours').textContent=hours.toFixed(1)+'h';
+  document.getElementById('s-streak').textContent=s;
+
+  const pb=personalBest();
+  document.getElementById('pb-row').innerHTML=`
+    <div class="pb-chip"><b>${pb.bestStreak}</b>longest streak (days)</div>
+    <div class="pb-chip"><b>${pb.bestWeek}</b>best week (sessions)</div>
+    <div class="pb-chip"><b>${(state.climbs.reduce((a,c)=>a+c.minutes,0)/60).toFixed(0)}h</b>total focus time</div>`;
+
+  const days=[], today=new Date(); today.setHours(0,0,0,0);
   for(let i=6;i>=0;i--){
     const d=new Date(today); d.setDate(today.getDate()-i);
     const nx=new Date(d); nx.setDate(d.getDate()+1);
     const c=state.climbs.filter(x=>x.at>=d.getTime()&&x.at<nx.getTime()).length;
-    days.push({label:d.toLocaleDateString(undefined,{weekday:'short'}).slice(0,3),count:c});
+    days.push({label:d.toLocaleDateString(undefined,{weekday:'short'}).slice(0,3),count:c,isToday:i===0});
   }
   const max=Math.max(1,...days.map(d=>d.count));
   let svg='<line x1="20" y1="140" x2="680" y2="140" stroke="rgba(15,23,34,.1)"/>';
   days.forEach((d,i)=>{
-    const x=30+i*95, w=70;
-    const h=20+(d.count/max)*100;
-    const peak=140-h, mid=x+w/2;
-    svg+=`<polygon points="${x},140 ${mid},${peak} ${x+w},140" fill="${d.count?'#3c6e71':'rgba(15,23,34,.1)'}"/>`;
+    const x=30+i*95,w=70,h=20+(d.count/max)*100,peak=140-h,mid=x+w/2;
+    const col=d.isToday?'#c9a24a':'#3c6e71';
+    svg+=`<polygon points="${x},140 ${mid},${peak} ${x+w},140" fill="${d.count?col:'rgba(15,23,34,.1)'}"/>`;
     if(d.count) svg+=`<polygon points="${mid-9},${peak+13} ${mid},${peak} ${mid+9},${peak+13}" fill="#fff"/>`;
-    svg+=`<text x="${mid}" y="156" text-anchor="middle" font-size="11" fill="#7b8aa1">${d.label}</text>`;
+    svg+=`<text x="${mid}" y="156" text-anchor="middle" font-size="11" fill="${d.isToday?'#c9a24a':'#7b8aa1'}" font-weight="${d.isToday?'bold':'normal'}">${d.label}</text>`;
   });
   document.getElementById('week-svg').innerHTML=svg;
-  const totals = {};
+
+  const totals={};
   wk.forEach(c=>{ totals[c.category]=(totals[c.category]||0)+c.minutes/60; });
-  const list = document.getElementById('cat-list');
-  list.innerHTML = state.categories.map((c,i)=>{
-    const done = totals[c.name]||0;
-    const pct = c.goal>0 ? Math.min(100,(done/c.goal)*100) : (done>0?100:0);
+  document.getElementById('cat-list').innerHTML=state.categories.map((c,i)=>{
+    const done=totals[c.name]||0, pct=c.goal>0?Math.min(100,(done/c.goal)*100):(done>0?100:0);
     return `<div class="cat-row">
       <span class="cat-dot" style="background:${c.color}"></span>
       <span class="cat-name">${c.name}</span>
       <div class="cat-bar"><div style="width:${pct}%;background:${c.color}"></div></div>
       <span class="cat-hours">${done.toFixed(1)}h / ${c.goal}h</span>
       <span class="goal-ctrl">
-        <button onclick="adjGoal(${i},-1)" title="Lower goal">−</button>
+        <button onclick="adjGoal(${i},-1)">−</button>
         <span class="goal-v">${c.goal}h</span>
-        <button onclick="adjGoal(${i},1)" title="Raise goal">+</button>
+        <button onclick="adjGoal(${i},1)">+</button>
       </span>
-      <button class="cat-del" onclick="manualLog('${c.name.replace(/'/g,"&#39;")}')" title="Log hours toward this trail" style="color:#4a90c2;opacity:.8;font-size:13px">+ log</button>
-      <button class="cat-del" onclick="delCategory(${i})" title="Remove trail">×</button>
+      <button class="cat-del" onclick="manualLog('${c.name.replace(/'/g,"&#39;")}')" style="color:#4a90c2;opacity:.8;font-size:13px">+ log</button>
+      <button class="cat-del" onclick="delCategory(${i})">×</button>
     </div>`;
   }).join('');
+
+  const s2=streak();
+  document.getElementById('streak-display').innerHTML=s2>0?`<span class="streak-badge">🔥 ${s2} day streak</span>`:'';
 }
-function adjGoal(i,d){
-  state.categories[i].goal = Math.max(0, Math.min(60, state.categories[i].goal + d));
-  save(); renderJourney();
-}
+function adjGoal(i,d){ state.categories[i].goal=Math.max(0,Math.min(60,state.categories[i].goal+d)); save(); renderJourney(); }
 function addCategory(){
-  const el=document.getElementById('new-cat');
-  const name=el.value.trim().toLowerCase();
+  const el=document.getElementById('new-cat'), name=el.value.trim().toLowerCase();
   if(!name) return;
-  if(state.categories.some(c=>c.name===name)) { el.value=''; return; }
+  if(state.categories.some(c=>c.name===name)){el.value='';return;}
   const palette=['#5b6e8f','#7a9b5a','#c9a24a','#a05a2c','#3c6e71','#8a5aa0','#c97a5a','#5aa0a0'];
-  state.categories.push({name, goal:2, color:palette[state.categories.length % palette.length]});
+  state.categories.push({name,goal:2,color:palette[state.categories.length%palette.length]});
   el.value=''; save(); renderJourney();
 }
-function delCategory(i){
-  state.categories.splice(i,1); save(); renderJourney();
-}
+function delCategory(i){ state.categories.splice(i,1); save(); renderJourney(); }
 
-/* ================ ROUTES VIEW ================ */
-const ROUTE_META = {
-  easy:      {name:'Easy Trail',      desc:'Light progress today'},
-  standard:  {name:'Standard Trail',  desc:'Steady journey'},
-  expedition:{name:'Expedition',      desc:'Long climb ahead'},
+/* ══ ROUTES ══ */
+const ROUTE_META={
+  easy:{name:'Easy Trail',desc:'Light progress today'},
+  standard:{name:'Standard Trail',desc:'Steady journey'},
+  expedition:{name:'Expedition',desc:'Long climb ahead'},
 };
 function renderRoutePref(){
-  const wrap=document.getElementById('route-pref-grid');
-  wrap.innerHTML = Object.keys(ROUTE_META).map(k=>{
-    const m=ROUTE_META[k], n=state.routes[k];
-    return `<div class="route-pref">
-      <h4>${m.name}</h4>
-      <div class="desc">${m.desc}</div>
-      <div class="ctrl">
-        <button onclick="adjRoute('${k}',-1)">−</button>
-        <span class="num">${n}</span>
-        <button onclick="adjRoute('${k}',1)">+</button>
-      </div>
-      <div class="unit">climbs</div>
-    </div>`;
+  document.getElementById('route-pref-grid').innerHTML=Object.keys(ROUTE_META).map(k=>{
+    const m=ROUTE_META[k],n=state.routes[k];
+    return `<div class="route-pref"><h4>${m.name}</h4><div class="desc">${m.desc}</div>
+      <div class="ctrl"><button onclick="adjRoute('${k}',-1)">−</button><span class="num">${n}</span><button onclick="adjRoute('${k}',1)">+</button></div>
+      <div class="unit">climbs</div></div>`;
   }).join('');
 }
-function adjRoute(k,d){
-  state.routes[k] = Math.max(1, Math.min(10, state.routes[k]+d));
-  save(); renderRoutePref(); renderRouteRow();
-}
+function adjRoute(k,d){ state.routes[k]=Math.max(1,Math.min(10,state.routes[k]+d)); save(); renderRoutePref(); renderRouteRow(); }
 function renderRouteRow(){
   const row=document.getElementById('route-row');
-  row.innerHTML = Object.keys(ROUTE_META).map(k=>{
-    const m=ROUTE_META[k], n=state.routes[k];
-    const active=state.selectedRoute===k;
+  row.innerHTML=Object.keys(ROUTE_META).map(k=>{
+    const m=ROUTE_META[k],n=state.routes[k],active=state.selectedRoute===k;
     return `<button class="route-card ${active?'active':''}" data-route="${k}">
-      <div class="rn">${m.name}</div>
-      <div class="rc">${n} climbs</div>
-    </button>`;
+      <div class="rn">${m.name}</div><div class="rc">${n} climbs</div></button>`;
   }).join('');
   row.querySelectorAll('.route-card').forEach(c=>{
     c.onclick=()=>{ state.selectedRoute=c.dataset.route; save(); renderRouteRow(); updateRouteTitle(); renderMountains(); renderClimber(); renderPips(); };
   });
 }
 function updateRouteTitle(){
-  document.getElementById('route-title').textContent = ROUTE_META[state.selectedRoute].name;
-  document.getElementById('moment').textContent = timeOfDayLabel();
+  document.getElementById('route-title').textContent=ROUTE_META[state.selectedRoute].name;
+  document.getElementById('moment').textContent=timeOfDayLabel();
 }
 
-/* ================ PREMIUM ================ */
-function showPremiumModal(){
-  document.getElementById('premium-modal').style.display = 'flex';
-}
+/* ══ PREMIUM ══ */
+function showPremiumModal(){ document.getElementById('premium-modal').style.display='flex'; }
 function startCheckout(){
-  // BUYER: Create a Stripe Payment Link at dashboard.stripe.com and paste the URL below.
-  const STRIPE_LINK = 'https://buy.stripe.com/YOUR_STRIPE_LINK';
-  window.open(STRIPE_LINK, '_blank');
+  // BUYER: Create a Stripe Payment Link and paste the URL here
+  const STRIPE_LINK='https://buy.stripe.com/YOUR_STRIPE_LINK';
+  window.open(STRIPE_LINK,'_blank');
 }
 
-/* ================ ONBOARDING ================ */
+/* ══ ONBOARDING ══ */
 function openOnboarding(){
-  document.getElementById('ob-status').textContent = '';
+  document.getElementById('ob-status').textContent='';
   document.getElementById('onboarding').classList.add('show');
 }
-
 async function onboard(kind){
-  const status = document.getElementById('ob-status');
-  status.textContent = '';
-
-  if(kind === 'guest'){
-    state.user = {kind:'guest', name:'Guest climber'};
-    save();
-    document.getElementById('onboarding').classList.remove('show');
+  const status=document.getElementById('ob-status');
+  status.textContent='';
+  if(kind==='guest'){
+    state.user={kind:'guest',name:'Guest climber'};
+    save(); document.getElementById('onboarding').classList.remove('show');
     document.getElementById('save-banner').classList.remove('show');
-    renderUser();
-    return;
+    renderUser(); return;
   }
-
-  if(kind === 'google'){
-    const { error } = await supa.auth.signInWithOAuth({
-      provider: 'google',
-      options: { redirectTo: window.location.href }
-    });
-    if(error) status.textContent = 'Google sign-in failed: ' + error.message;
-    return;
+  if(kind==='google'){
+    const {error}=await supa.auth.signInWithOAuth({provider:'google',options:{redirectTo:window.location.href}});
+    if(error) status.textContent='Google sign-in failed: '+error.message; return;
   }
-
-  if(kind === 'email'){
-    const email = document.getElementById('ob-email').value.trim();
-    const pass  = document.getElementById('ob-pass').value;
-    const name  = document.getElementById('ob-name').value.trim() || 'Climber';
-    if(!email){ document.getElementById('ob-email').focus(); return; }
-    if(!pass || pass.length < 6){ status.textContent = 'Password must be at least 6 characters.'; return; }
-
-    status.textContent = 'Signing in…';
-
-    // Try sign-in first; if no account exists, sign up
-    let { data, error } = await supa.auth.signInWithPassword({ email, password: pass });
-    if(error && error.message.includes('Invalid login')){
-      ({ data, error } = await supa.auth.signUp({
-        email, password: pass,
-        options: { data: { display_name: name } }
-      }));
-      if(!error) status.textContent = 'Account created! Check your email to confirm, then come back.';
+  if(kind==='email'){
+    const email=document.getElementById('ob-email').value.trim();
+    const pass=document.getElementById('ob-pass').value;
+    const name=document.getElementById('ob-name').value.trim()||'Climber';
+    if(!email){document.getElementById('ob-email').focus();return;}
+    if(!pass||pass.length<6){status.textContent='Password must be at least 6 characters.';return;}
+    status.textContent='Signing in…';
+    let {data,error}=await supa.auth.signInWithPassword({email,password:pass});
+    if(error&&error.message.includes('Invalid login')){
+      ({data,error}=await supa.auth.signUp({email,password:pass,options:{data:{display_name:name}}}));
+      if(!error) status.textContent='Account created! Check your email to confirm.';
     }
-    if(error){ status.textContent = error.message; return; }
-
-    state.user = {kind:'email', name, email};
-    save();
+    if(error){status.textContent=error.message;return;}
+    state.user={kind:'email',name,email}; save();
     document.getElementById('onboarding').classList.remove('show');
     document.getElementById('save-banner').classList.remove('show');
-    renderUser();
-    await loadFromCloud();
+    renderUser(); await loadFromCloud();
   }
 }
-
 async function signOut(){
   if(!confirm('Switch climbers? Your journey stays on this device.')) return;
-  await supa.auth.signOut();
-  state.user = null;
-  save();
-  renderUser();
-  openOnboarding();
+  await supa.auth.signOut(); state.user=null; save(); renderUser(); openOnboarding();
 }
-
 function renderUser(){
-  const u = state.user;
-  document.getElementById('who').textContent = u?.name || 'Guest climber';
-  document.getElementById('who-sub').textContent = u?.email || (u?.kind==='guest' ? 'No account linked' : 'No account linked');
-  document.getElementById('set-acc').textContent = u?.email ? `Signed in as ${u.email}` : 'Guest journey on this device';
+  const u=state.user;
+  document.getElementById('who').textContent=u?.name||'Guest climber';
+  document.getElementById('who-sub').textContent=u?.email||(u?.kind==='guest'?'No account linked':'No account linked');
+  document.getElementById('set-acc').textContent=u?.email?`Signed in as ${u.email}`:'Guest journey on this device';
 }
 function maybeOfferSave(){
-  if(state.user && state.user.kind!=='guest') return;
+  if(state.user&&state.user.kind!=='guest') return;
   if(state.saveDismissed) return;
-  if(state.climbs.length>=3){
-    document.getElementById('save-banner').classList.add('show');
-  }
+  if(state.climbs.length>=3) document.getElementById('save-banner').classList.add('show');
 }
-function dismissSave(){
-  state.saveDismissed=true; save();
-  document.getElementById('save-banner').classList.remove('show');
-}
+function dismissSave(){ state.saveDismissed=true; save(); document.getElementById('save-banner').classList.remove('show'); }
 
-/* ================ NAV ================ */
+/* ══ NAV ══ */
 document.querySelectorAll('nav .nav').forEach(b=>{
   b.onclick=()=>{
     document.querySelectorAll('nav .nav').forEach(x=>x.classList.remove('active'));
@@ -1318,58 +1230,36 @@ document.querySelectorAll('nav .nav').forEach(b=>{
   };
 });
 
-/* ================ WIRE UP ================ */
-document.getElementById('startBtn').onclick = startTimer;
-document.getElementById('resetBtn').onclick = resetTimer;
-document.querySelectorAll('#len-pills .pill').forEach(p=>{
-  p.onclick=()=>setLen(Number(p.dataset.min));
-});
-document.getElementById('theme-sel').onchange = (e) => {
-  const chosen = e.target.value;
-  if((chosen === 'desert' || chosen === 'night') && !state.premium){
-    e.target.value = state.theme; // snap back
-    showPremiumModal();
-    return;
-  }
-  state.theme = chosen;
-  save();
-  buildScene();
+/* ══ WIRE UP ══ */
+document.getElementById('startBtn').onclick=startTimer;
+document.getElementById('resetBtn').onclick=resetTimer;
+document.querySelectorAll('#len-pills .pill').forEach(p=>{ p.onclick=()=>setLen(Number(p.dataset.min)); });
+document.getElementById('theme-sel').onchange=(e)=>{
+  const chosen=e.target.value;
+  if((chosen==='desert'||chosen==='night')&&!state.premium){ e.target.value=state.theme; showPremiumModal(); return; }
+  state.theme=chosen; save(); buildScene();
 };
 document.getElementById('sound-sel').onchange=(e)=>{ state.sound=e.target.value; save(); };
+document.getElementById('break-sel').onchange=(e)=>{ state.breakMin=parseInt(e.target.value); save(); };
 
-/* ================ INIT ================ */
+/* ══ INIT ══ */
 async function init(){
-  // If coming from landing page sign-in button, force onboarding open
-  const params = new URLSearchParams(window.location.search);
-  if(params.get('signin') === 'true'){
-    // Clear user so onboarding shows regardless of saved state
-    state.user = null;
-    save();
-  }
+  const params=new URLSearchParams(window.location.search);
+  if(params.get('signin')==='true'){ state.user=null; save(); }
 
-  // Check if Supabase has a session (e.g. returning after Google OAuth redirect)
-  const { data: { user } } = await supa.auth.getUser();
-  if(user && !state.user){
-    state.user = {
-      kind: 'google',
-      name: user.user_metadata?.full_name || user.email,
-      email: user.email
-    };
-    save();
-    await loadFromCloud();
+  const {data:{user}}=await supa.auth.getUser();
+  if(user&&!state.user){
+    state.user={kind:'google',name:user.user_metadata?.full_name||user.email,email:user.email};
+    save(); await loadFromCloud();
   }
-
   if(!state.user) openOnboarding();
   renderUser();
   setLen(state.sessionMin);
-  renderRouteRow();
-  renderRoutePref();
-  updateRouteTitle();
-  buildScene();
-  renderTimer();
-  renderJourney();
-  document.getElementById('theme-sel').value = state.theme;
-  document.getElementById('sound-sel').value = state.sound;
+  renderRouteRow(); renderRoutePref(); updateRouteTitle();
+  buildScene(); renderTimer(); renderJourney();
+  document.getElementById('theme-sel').value=state.theme;
+  document.getElementById('sound-sel').value=state.sound;
+  document.getElementById('break-sel').value=String(state.breakMin||5);
 }
 init();
 </script>

@@ -20,31 +20,75 @@
   button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   input{font:inherit;color:inherit}
 
-  /* ── MOBILE LAYOUT ── */
+  /* ── LAYOUT ── */
   body{display:flex;height:100vh;width:100vw;flex-direction:row}
+
+  /* ── MOBILE ── */
   @media(max-width:680px){
-    body{flex-direction:column}
+    /* Allow full page scroll on mobile */
+    html,body{overflow:auto!important;height:auto!important}
+    body{flex-direction:column;min-height:100vh}
+    main{overflow:visible!important}
+    .view{overflow:visible!important}
+    .view.active{display:flex}
+
+    /* Top nav bar */
     aside{
+      position:sticky;top:0;z-index:20;
       width:100%!important;height:auto!important;flex-direction:row!important;
-      padding:10px 16px!important;border-right:none!important;
+      padding:8px 12px!important;border-right:none!important;
       border-bottom:1px solid var(--line)!important;
       align-items:center!important;gap:0!important;
+      background:var(--paper-2)!important;
     }
     .brand{margin-bottom:0!important;margin-right:auto}
-    .brand-sub{display:none}
-    nav{display:flex;flex-direction:row;gap:2px;margin:0 8px}
-    nav button.nav{padding:8px 10px;font-size:12px;gap:5px}
+    .brand-sub,.side-foot{display:none!important}
+    nav{display:flex;flex-direction:row;gap:2px;margin:0 6px}
+    nav button.nav{padding:10px 11px;font-size:12px;gap:4px;border-radius:8px}
     nav button.nav .ico{display:none}
-    .side-foot{display:none}
-    #climb .controls{grid-template-columns:1fr!important;gap:10px!important;padding:10px 14px!important}
-    .hud-timer .time{font-size:52px!important}
-    #journey{padding:18px!important}
-    .j-grid{grid-template-columns:1fr!important}
-    .stat-row{grid-template-columns:repeat(3,1fr)}
-    #routes{padding:18px!important}
-    .route-pref-grid{grid-template-columns:1fr!important}
-    #settings{padding:18px!important}
-    .timer-actions{justify-content:center!important}
+
+    /* Climb view stacks vertically */
+    #climb{flex-direction:column;height:auto!important}
+    .scene{
+      height:52vw!important;min-height:180px!important;max-height:300px;
+      flex:none!important;
+    }
+    .hud-timer .time{font-size:48px!important}
+    .hud-timer .phase{font-size:10px!important}
+    .controls{
+      grid-template-columns:1fr!important;
+      gap:12px!important;padding:14px 16px!important;
+      overflow:visible!important;
+    }
+    .pill-row{flex-wrap:wrap;gap:8px}
+    .pill{padding:8px 14px!important;font-size:13px!important}
+    .route-row{gap:8px}
+    .route-card{padding:10px 8px!important}
+    .route-card .rn{font-size:12px}
+    .timer-actions{justify-content:center!important;gap:12px;padding-bottom:6px}
+    .btn{padding:13px 28px!important;font-size:15px!important}
+
+    /* Journey & other views */
+    #journey,#routes,#settings{
+      padding:16px!important;overflow:visible!important;flex-direction:column;height:auto!important
+    }
+    .j-grid{grid-template-columns:1fr!important;gap:14px}
+    .stat-row{grid-template-columns:repeat(3,1fr);gap:8px}
+    .stat .v{font-size:24px}
+    .pb-row{gap:8px}
+    .pb-chip{font-size:11px;padding:6px 10px}
+    .panel{padding:16px}
+    .cat-row{flex-wrap:wrap;gap:6px}
+    .cat-hours{min-width:auto}
+    .route-pref-grid{grid-template-columns:1fr!important;gap:12px}
+    .setting-row{flex-wrap:wrap;gap:8px}
+    .setting-row select{width:100%;font-size:15px;padding:10px}
+    .j-head h1{font-size:28px}
+
+    /* Make touch targets bigger */
+    .goal-ctrl button{width:30px!important;height:30px!important;font-size:16px!important}
+    .cat-del{font-size:16px!important;opacity:.7!important}
+    select,input{font-size:16px!important} /* prevents iOS zoom on focus */
   }
 
   /* ── ONBOARDING ── */

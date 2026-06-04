@@ -1228,7 +1228,15 @@ async function onboard(kind){
     renderUser(); return;
   }
   if(kind==='google'){
-    const {error}=await supa.auth.signInWithOAuth({provider:'google',options:{redirectTo:window.location.href}});
+    status.textContent='Redirecting to Google…';
+    const redirectTo = window.location.origin + '/app.html';
+    const {error}=await supa.auth.signInWithOAuth({
+      provider:'google',
+      options:{
+        redirectTo,
+        queryParams:{ access_type:'offline', prompt:'consent' }
+      }
+    });
     if(error) status.textContent='Google sign-in failed: '+error.message; return;
   }
   if(kind==='email'){
@@ -1292,23 +1300,54 @@ document.getElementById('sound-sel').onchange=(e)=>{ state.sound=e.target.value;
 document.getElementById('break-sel').onchange=(e)=>{ state.breakMin=parseInt(e.target.value); save(); };
 
 /* ══ INIT ══ */
-async function init(){
-  const params=new URLSearchParams(window.location.search);
-  if(params.get('signin')==='true'){ state.user=null; save(); }
 
-  const {data:{user}}=await supa.auth.getUser();
-  if(user&&!state.user){
-    state.user={kind:'google',name:user.user_metadata?.full_name||user.email,email:user.email};
-    save(); await loadFromCloud();
+// Listen for auth state changes — fires after Google OAuth redirect lands back on page
+supa.auth.onAuthStateChange(async (event, session) => {
+  if((event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') && session?.user){
+    const user = session.user;
+    if(!state.user || state.user.kind === 'guest'){
+      state.user = {
+        kind: 'google',
+        name: user.user_metadata?.full_name || user.user_metadata?.name || user.email,
+        email: user.email
+      };
+      save();
+      renderUser();
+      document.getElementById('onboarding').classList.remove('show');
+      await loadFromCloud();
+    }
   }
+  if(event === 'SIGNED_OUT'){
+    state.user = null; save(); renderUser(); openOnboarding();
+  }
+});
+
+async function init(){
+  // Handle signin=true param from landing page
+  const params = new URLSearchParams(window.location.search);
+  if(params.get('signin') === 'true'){ state.user = null; save(); }
+
+  // Check for existing Supabase session (covers: returning users, post-OAuth redirect)
+  const { data:{ session } } = await supa.auth.getSession();
+  if(session?.user && !state.user){
+    const user = session.user;
+    state.user = {
+      kind: 'google',
+      name: user.user_metadata?.full_name || user.user_metadata?.name || user.email,
+      email: user.email
+    };
+    save();
+    await loadFromCloud();
+  }
+
   if(!state.user) openOnboarding();
   renderUser();
   setLen(state.sessionMin);
   renderRouteRow(); renderRoutePref(); updateRouteTitle();
   buildScene(); renderTimer(); renderJourney();
-  document.getElementById('theme-sel').value=state.theme;
-  document.getElementById('sound-sel').value=state.sound;
-  document.getElementById('break-sel').value=String(state.breakMin||5);
+  document.getElementById('theme-sel').value = state.theme;
+  document.getElementById('sound-sel').value = state.sound;
+  document.getElementById('break-sel').value = String(state.breakMin||5);
 }
 init();
 </script>

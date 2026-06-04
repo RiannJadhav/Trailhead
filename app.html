@@ -605,6 +605,11 @@ async function loadFromCloud(){
 
 /* ══ AUDIO ══ */
 let audioCtx=null, audioNodes=[];
+// Unlock audio on first click (browsers require user gesture before playing sound)
+document.addEventListener('click',function unlock(){
+  if(!audioCtx) audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+  if(audioCtx.state==='suspended') audioCtx.resume();
+},{once:true});
 function stopAudio(){ audioNodes.forEach(n=>{try{n.stop()}catch(e){}}); audioNodes=[]; }
 function startAudio(){
   stopAudio();
